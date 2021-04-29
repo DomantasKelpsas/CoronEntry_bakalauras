@@ -86,3 +86,9 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+
+# ML
+Face_Mask_ML/mask-dataset
+*.tflite
+*.model
+*.h5
