@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,4 +15,6 @@ use App\Http\Controllers\PagesController;
 |
 */
 
-Route::get('/', [PagesController::class, 'index'] );
+Route::get('/', [PagesController::class, 'index'] )->name('home');
+Route::get('/login', [LoginController::class, 'index'] )->name('login');
+Route::post('/login', [LoginController::class, 'store']);
