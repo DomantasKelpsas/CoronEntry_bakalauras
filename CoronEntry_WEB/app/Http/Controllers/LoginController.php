@@ -33,7 +33,7 @@ class LoginController extends Controller
         // } 
         // else return back()->with('status', 'Invalid login details');
         if (DB::table('users')->where('email', '=', $request->email)->where('password', '=', $request->password)->where('user_type', 'Admin')->exists()) {
-            return redirect()->route('home');       
+            return redirect()->route('stats');       
         } 
         else return back()->with('status', 'Invalid login details');
         

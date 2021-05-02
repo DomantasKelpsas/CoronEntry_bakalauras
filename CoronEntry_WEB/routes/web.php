@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\StatsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,4 @@ use App\Http\Controllers\LoginController;
 Route::get('/', [PagesController::class, 'index'] )->name('home');
 Route::get('/login', [LoginController::class, 'index'] )->name('login');
 Route::post('/login', [LoginController::class, 'store']);
+Route::get('/stats', [StatsController::class, 'makeChart'] )->name('stats');
