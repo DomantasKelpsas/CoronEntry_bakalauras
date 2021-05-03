@@ -14,7 +14,18 @@ onchange="singleUserStats(this.options[this.selectedIndex].value)">
             <option value="{{$user->id}}" >{{$user->name}} [{{$user->user_code}}]</option>
         @endforeach
     </select>
-    <div id="test"></div>
+    <div id="single-user-stats" class="mx-auto text-center flex justify-center p-8 m-10 bg-gray-100">
+    <table id="single-user-table" class="table-auto ">
+        <thead>
+        <tr>       
+        <th>EntryPoint</th>
+        <th>Date</th>
+        </tr>
+        </thead>
+        <tbody id="single-user-table-body">
+        </tbody>
+    </table>
+    </div>
     
 
 
@@ -72,9 +83,20 @@ $.ajax({
 
 
 function showSingleUserStats(data){
-    data.forEach( element => {
-        document.getElementById("test").innerHTML += 
-              `<h3>${element['date']}</h3>`
+    var table = document.getElementById("single-user-table-body");
+    table.innerHTML = "";
+//     if (data === undefined || data.length == 0) {
+//         var tablecontainer = document.getElementById("single-user-stats");
+//         tablecontainer.innerHTML +=    `<h3>Selected user does not have any data</h3>`;
+// }
+//else
+    data.forEach( element => {                 
+        var row = table.insertRow(0);
+        var td_ep = row.insertCell(0);
+        var td_date = row.insertCell(1);
+        td_ep.innerHTML = element['ep_id'];
+        td_date.innerHTML = element['date'];
+
     });
 }
 </script>

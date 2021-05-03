@@ -18,7 +18,7 @@
     @else
     <li><a href="/" class="p-3">Home</a></li>
       <li><a href="{{route('stats')}}" class="p-3">Statistics</a></li>
-      <li><a href="{{route('stats')}}" class="p-3">User Management</a></li>
+      <li><a href="{{route('usermng')}}" class="p-3">User Management</a></li>
       <li><a href="{{route('stats')}}" class="p-3">EP Management</a></li>
     @endif   
     </ul> 
