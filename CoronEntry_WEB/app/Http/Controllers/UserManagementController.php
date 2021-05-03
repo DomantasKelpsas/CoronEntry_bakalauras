@@ -9,8 +9,8 @@ class UserManagementController extends Controller
 {
     public function index()
     {
-
-        $users = User::all();
+        $sid = request()->session()->get('session_id');
+        $users = User::select('*')->where('fk_placeid','=', $sid)->where('user_type','=', 'Default')->get();
         return view('user-management')->with('users',$users);
     }
 

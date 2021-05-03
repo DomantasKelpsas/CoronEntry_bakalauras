@@ -7,13 +7,12 @@
     <title>CoronEntry</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
-   
-    
-    
-    
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">  
 </head>
 <body>
+@if(!session()->has('session_id') && !Route::is('login'))
+<script type="text/javascript">window.location.href = "{{url('/login')}}"</script>
+@endif
 <nav class="p-6 bg-purple-100 flex justify-between">     
     <ul class="flex items-center">   
     @if(Route::is('login'))
@@ -27,6 +26,8 @@
     @endif   
     </ul> 
 </nav>
+
+
 @yield('content')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js" integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg==" crossorigin="anonymous"></script>
@@ -37,3 +38,5 @@
     @yield('script')
 </body>
 </html>
+
+
