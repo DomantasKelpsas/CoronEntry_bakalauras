@@ -5,6 +5,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\EpManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,8 @@ Route::post('/login', [LoginController::class, 'store']);
 Route::get('/user-select/{id}', [StatsController::class, 'singleUserStats'])->name('user-select');
 Route::get('/stats', [StatsController::class, 'makeChart'] )->name('stats');
 Route::get('/usermng', [UserManagementController::class, 'index'] )->name('usermng');
+Route::put('/usermng/{id}/edit', [UserManagementController::class, 'edit'] )->name('usermng-edit');
+Route::delete('/usermng/{id}/delete', [UserManagementController::class, 'delete'] )->name('usermng-delete');
+Route::get('/epmng', [EpManagementController::class, 'index'] )->name('epmng');
+Route::put('/epmng/{id}/edit', [EpManagementController::class, 'edit'] )->name('usermng-edit');
+Route::delete('/epmng/{id}/delete', [EpManagementController::class, 'delete'] )->name('usermng-delete');

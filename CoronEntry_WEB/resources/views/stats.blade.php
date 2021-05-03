@@ -15,8 +15,8 @@ onchange="singleUserStats(this.options[this.selectedIndex].value)">
         @endforeach
     </select>
     <div id="single-user-stats" class="mx-auto text-center flex justify-center p-8 m-10 bg-gray-100">
-    <table id="single-user-table" class="table-auto ">
-        <thead>
+    <table id="single-user-table" class="table ">
+        <thead class="thead-dark">
         <tr>       
         <th>EntryPoint</th>
         <th>Date</th>
@@ -29,7 +29,12 @@ onchange="singleUserStats(this.options[this.selectedIndex].value)">
     
 
 
-<script>
+
+@endsection
+
+@section('script')
+<script type="text/javascript">
+
 var data = <?= json_encode($data['chartdata']);?>;
 console.log(data);
 var ctx = document.getElementById('myChart').getContext('2d');
@@ -71,6 +76,7 @@ var myChart = new Chart(ctx, {
     }
 });
 
+
 function singleUserStats(id){
 $.ajax({
     url: '/user-select/'+id,
@@ -94,7 +100,7 @@ function showSingleUserStats(data){
         var row = table.insertRow(0);
         var td_ep = row.insertCell(0);
         var td_date = row.insertCell(1);
-        td_ep.innerHTML = element['ep_id'];
+        td_ep.innerHTML = element['name'];
         td_date.innerHTML = element['date'];
 
     });
