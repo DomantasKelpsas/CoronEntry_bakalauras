@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 <body>
-<nav class="p-6 bg-white flex justify-between">     
+<nav class="p-6 bg-purple-100 flex justify-between">     
     <ul class="flex items-center">   
     @if(Route::is('login'))
       <li><a href="/" class="p-3">Home</a></li>

@@ -19,4 +19,6 @@ use App\Http\Controllers\StatsController;
 Route::get('/', [PagesController::class, 'index'] )->name('home');
 Route::get('/login', [LoginController::class, 'index'] )->name('login');
 Route::post('/login', [LoginController::class, 'store']);
+//Route::post('/user-select', [StatsController::class, 'singleUserStats'])->name('user-select');
+Route::get('/user-select/{id}', [StatsController::class, 'singleUserStats'])->name('user-select');
 Route::get('/stats', [StatsController::class, 'makeChart'] )->name('stats');

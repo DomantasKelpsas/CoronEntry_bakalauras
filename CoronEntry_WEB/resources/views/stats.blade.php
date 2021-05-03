@@ -1,10 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Statistics</h1>
-<canvas id="myChart" max-width="100%" height="50vh"></canvas>
+<h1 class="p-10 flex justify-center text-4xl">Monthly Statistics</h1>
+<div class="bg-gray-100 p-5 m-8">
+<canvas id="myChart" class="bg-white rounded" max-width="100%" height="50vh"></canvas>
+</div>
+<h1 class="p-10 flex justify-center text-3xl">Single User Statistics</h1>
+
+<select id="user-select" name="user-select" class="flex justify-center px-4 py-3 rounded font-medium w-3/12 mx-auto text-center" 
+onchange="singleUserStats(this.options[this.selectedIndex].value)">
+        <option  class="text-center" value="">--- Select User ---</option>
+        @foreach($data['users'] as $user)
+            <option value="{{$user->id}}" >{{$user->name}} [{{$user->user_code}}]</option>
+        @endforeach
+    </select>
+    <div id="test"></div>
+    
+
+
 <script>
-var data = <?= json_encode($data);?>;
+var data = <?= json_encode($data['chartdata']);?>;
 console.log(data);
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
@@ -44,5 +59,23 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+function singleUserStats(id){
+$.ajax({
+    url: '/user-select/'+id,
+    success: function(data) {
+        console.log(data);
+        showSingleUserStats(data);
+    }
+});
+}
+
+
+function showSingleUserStats(data){
+    data.forEach( element => {
+        document.getElementById("test").innerHTML += 
+              `<h3>${element['date']}</h3>`
+    });
+}
 </script>
 @endsection
