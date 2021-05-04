@@ -23,6 +23,7 @@
       <li><a href="{{route('stats')}}" class="p-3">Statistics</a></li>
       <li><a href="{{route('usermng')}}" class="p-3">User Management</a></li>
       <li><a href="{{route('epmng')}}" class="p-3">EP Management</a></li>
+      <li><a href="{{route('logout')}}" class="p-3 text-red-500">Logout</a></li>
     @endif   
     </ul> 
 </nav>

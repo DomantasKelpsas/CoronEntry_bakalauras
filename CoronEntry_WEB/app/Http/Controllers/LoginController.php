@@ -44,4 +44,11 @@ class LoginController extends Controller
         else return back()->with('status', 'Invalid login details');
         
     }
+
+    public function logout(){
+        
+        $request = request();
+        $request->session()->forget('session_id');
+        return view('login');
+    }
 }

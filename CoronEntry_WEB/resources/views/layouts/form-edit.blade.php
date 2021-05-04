@@ -17,7 +17,7 @@
           </div>     
           @if(Route::is('epmng'))
           <div class="form-group">
-            <label for="name" class="col-form-label">Entry Class:</label>
+            <label for="name" class="col-form-label">Name:</label>
             <input type="text" class="name" name="name" id="name">
           </div>     
           @endif
