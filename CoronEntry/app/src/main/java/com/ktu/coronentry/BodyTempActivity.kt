@@ -89,6 +89,7 @@ class BodyTempActivity : AppCompatActivity(), MqttDataInterface {
                 )
 
             })
+        //if (topic == bodyTempBoolTopic && message == "true")
     }
 
     fun mqtttest(view: View) {
