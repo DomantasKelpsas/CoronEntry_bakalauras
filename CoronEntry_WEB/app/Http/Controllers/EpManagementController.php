@@ -53,8 +53,12 @@ class EpManagementController extends Controller
     public function delete(Request $request, $id)
     {
      
-        $eps = Entrypoint::find($id);      
-        $eps->delete();
+        $eps = Entrypoint::find($id);
+        $eps->entry_class = "";
+        $eps->name = "";
+        $eps->fk_placeid = null;
+        $eps->save();      
+        // $eps->delete();
 
         return redirect('/epmng')->with('success','Delete');
         //dd($request->input('entry-class'));

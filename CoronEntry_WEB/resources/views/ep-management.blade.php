@@ -7,8 +7,8 @@
 @extends('layouts.form-delete')
 <div class="p-10 border">
 <button class="add bg-blue-500 text-white p-2 my-4 rounded font-medium w-1/12" data-toggle="modal" data-target="#addModal">Add EP</button>
-<table  id="ep-table">
-        <thead class="thead-dark">
+<table class="table w-full thead-light"  id="ep-table">
+        <thead class="thead-light">
         <tr>    
         <th scope="col" class="hidden"></th>   
         <th scope="col">Name</th>        

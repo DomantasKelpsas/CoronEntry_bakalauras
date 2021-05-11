@@ -56,8 +56,11 @@ class UserManagementController extends Controller
     public function delete(Request $request, $id)
     {
      
-        $users = User::find($id);      
-        $users->delete();
+        $user = User::find($id);       
+        $user->entry_class = "";
+        $user->fk_placeid = null;
+        $user->save();  
+        //$users->delete();
 
         return redirect('/usermng')->with('success','Delete');
         //dd($request->input('entry-class'));

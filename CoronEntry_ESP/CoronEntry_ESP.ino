@@ -62,6 +62,7 @@ void setup() {
 
   myservo2.setPeriodHertz(50); 
   myservo2.attach(servoPin2);
+  servoReset();
   //myservo2.write(45);
 
   //servoReset();
@@ -186,7 +187,7 @@ void loop() {
   if(maskOn){
 
   float bodytemp = readBodytemp();  
-  if(bodytemp < 36 && bodytemp > 28){
+  if(bodytemp < 36 && bodytemp > 25){
     client.publish(bodytempBoolTopic,"true");
     tone(buzzer, 1000); // Send 1KHz sound signal...
     delay(1000);        // ...for 1 sec
