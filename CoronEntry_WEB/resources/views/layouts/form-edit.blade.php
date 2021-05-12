@@ -13,7 +13,11 @@
        {{ method_field('PUT')}}
           <div class="form-group">
             <label for="entry-class" class="col-form-label">Entry Class:</label>
-            <input type="text" class="entry-class" name="entry-class" id="entry-class">
+            <select type="text" class="entry-class" name="entry-class" id="entry-class">
+            <option value="Low">Low</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="High">High</option>
+            </select>
           </div>     
           @if(Route::is('epmng'))
           <div class="form-group">

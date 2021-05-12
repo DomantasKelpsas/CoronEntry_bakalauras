@@ -6,7 +6,9 @@
 @extends('layouts.form-edit')
 @extends('layouts.form-delete')
 <div class="p-10 border">
-<button class="add bg-blue-500 text-white p-2 my-4 rounded font-medium w-1/12" data-toggle="modal" data-target="#addModal">Add EP</button>
+<h1 class="p-10 flex justify-center text-4xl">Entry Point Management</h1>
+<button class="add bg-blue-500 text-white absolute bottom-15 right-20 rounded-full h-20 w-20" data-toggle="modal" data-target="#addModal">
+<i class="fas fa-plus fa-3x"></i></button>
 <table class="table w-full thead-light"  id="ep-table">
         <thead class="thead-light">
         <tr>    
@@ -26,8 +28,8 @@
         <td>{{$ep['entry_class']}}</td>
         <td class="" >
         
-            <button class="edit bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded">Edit</button>
-            <button class="delete bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">Delete</button>      
+        <button class="edit bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-3 mr-2 rounded"><i class="far fa-edit"></i></button>
+        <button class="delete bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-3 rounded"><i class="fas fa-trash-alt"></i></button>    
        
         </td>
      

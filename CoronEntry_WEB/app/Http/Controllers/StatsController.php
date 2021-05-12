@@ -17,7 +17,8 @@ class StatsController extends Controller
     public function makeChart()
     {          
         $sid = request()->session()->get('session_id');   
-        $usercount = Statistic::select(DB::raw("COUNT(DISTINCT(user_id)) as count"))->where('fk_placeid','=',  $sid)->whereYear('date',date('Y'))->groupBy(DB::raw("Month(date)"))->pluck('count');
+        //$usercount = Statistic::select(DB::raw("COUNT(DISTINCT(user_id)) as count"))->where('fk_placeid','=',  $sid)->whereYear('date',date('Y'))->groupBy(DB::raw("Month(date)"))->pluck('count');
+        $usercount = Statistic::select(DB::raw("COUNT(user_id) as count"))->where('fk_placeid','=',  $sid)->whereYear('date',date('Y'))->groupBy(DB::raw("Month(date)"))->pluck('count');
         $months = Statistic::select(DB::raw("Month(date) as month"))->where('fk_placeid','=',  $sid)->whereYear('date',date('Y'))->groupBy(DB::raw("Month(date)"))->pluck('month');       
         $users = User::select('*')->where('fk_placeid','=', $sid)->get();
         //$users = User::all();
