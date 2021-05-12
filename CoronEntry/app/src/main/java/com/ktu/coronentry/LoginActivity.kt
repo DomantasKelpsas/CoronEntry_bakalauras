@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isInvisible
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), MqttDataInterface {
@@ -42,7 +43,7 @@ class LoginActivity : AppCompatActivity(), MqttDataInterface {
             email = et_email.text.trim().toString()
             password = et_password.text.trim().toString()
 
-            sendLoginCreds(email!!,password!!)
+            sendLoginCreds(email!!, password!!)
         }
     }
 

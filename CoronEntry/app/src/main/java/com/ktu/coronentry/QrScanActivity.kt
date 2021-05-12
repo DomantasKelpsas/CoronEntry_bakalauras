@@ -8,7 +8,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import com.google.zxing.integration.android.IntentIntegrator
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_qr_scan.*
 
 
@@ -34,6 +36,7 @@ class QrScanActivity : AppCompatActivity(),MqttDataInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_scan)
+        layout_qr.isVisible = true
 
         mqttManager = MqttManager(connectionParams, applicationContext, this)
         mqttManager?.connect()
@@ -45,12 +48,7 @@ class QrScanActivity : AppCompatActivity(),MqttDataInterface {
         scanner.setBeepEnabled(false)
         scanner.initiateScan()
 
-//        btn_qrscan.setOnClickListener {
-//            val scanner = IntentIntegrator(this)
-//            scanner.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-//            scanner.setBeepEnabled(false)
-//            scanner.initiateScan()
-//        }
+        layout_qr.isInvisible = true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -60,7 +58,6 @@ class QrScanActivity : AppCompatActivity(),MqttDataInterface {
                 if (result.contents == null) {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(this, "Scanned: " + result.contents, Toast.LENGTH_LONG).show()
                     connectCredsCheck(result.contents)
                 }
             } else {
@@ -71,11 +68,13 @@ class QrScanActivity : AppCompatActivity(),MqttDataInterface {
     }
 
     override fun getMqttMesage(topic: String, message: String) {
-        Log.d("Main", "got MQTT interface message -> $message")
+        Log.d("qrscan", "got MQTT interface message -> $message")
         if (message == "true" && topic == inTopic) {
             gotoFaceMaskActivity()
         }
-
+        else if(message == "false" && topic == inTopic){
+            layout_qr.isVisible = true
+        }
     }
 
     private fun connectCredsCheck(ep_code: String){
