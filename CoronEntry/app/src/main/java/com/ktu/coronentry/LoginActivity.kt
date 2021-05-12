@@ -56,10 +56,10 @@ class LoginActivity : AppCompatActivity(), MqttDataInterface {
         }
     }
 
-    private fun gotoMainActivity(user_code: String) {
+    private fun gotoMainActivity(user: String) {
         val intent = Intent(this, MainActivity::class.java).apply {
         }
-        intent.putExtra("user_code", user_code)
+        intent.putExtra("user", user)
         startActivity(intent)
         finish()
     }

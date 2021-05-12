@@ -188,41 +188,6 @@ class MqttManager(
             ex.printStackTrace()
         }
 
-
-
-//        token?.setActionCallback(object : IMqttActionListener {
-//            override fun onSuccess(asyncActionToken: IMqttToken) {
-//
-//                try
-//                {
-//                    client.publish(connectionParams.topic,message.toByteArray(),0,false,null,object :IMqttActionListener{
-//                        override fun onSuccess(asyncActionToken: IMqttToken?) {
-//                            Log.w("Mqtt", "Publish Success!")
-//
-//                        }
-//
-//                        override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
-//                            Log.w("Mqtt", "Publish Failed!")
-//
-//                        }
-//
-//                    })
-//                }
-//                catch (ex:MqttException) {
-//                    System.err.println("Exception publishing")
-//                    ex.printStackTrace()
-//                }
-//
-//            }
-//
-//            override fun onFailure(asyncActionToken: IMqttToken, exception: Throwable) {
-//                // Something went wrong e.g. connection timeout or firewall problems
-//                Log.d("Publish-mqtt", "onFailure")
-//            }
-//        })
-
-
-
     }
 
     @Synchronized fun id(context: Context):String {
@@ -248,59 +213,9 @@ class MqttManager(
 data class MQTTConnectionParams(
     val clientId: String,
     val host: String,
-    //val topic: String,
     val username: String,
     val password: String
-){
-
-}
-
-//public class MqttApi(val context: Context) : MqttDataInterface{
-//
-//    var mqttManager: MqttManager? = null
-//    val mqttBroker = "mqtt.dioty.co";
-//    val mqttUser = "domantas.kelpsas@gmail.com";
-//    val mqttPassword = "8b2ae255";
-//    var mqttMessage: String = ""
-//
-//
-//
-//
-//
-//    fun connect(topic: String) {
-//
-//
-//        var host = "tcp://$mqttBroker:1883"
-//        //var topic = "/domantas.kelpsas@gmail.com/con-creds"
-//        var connectionParams = MQTTConnectionParams(
-//            "CoronEntryApp",
-//            host,
-//            topic,
-//            mqttUser,
-//            mqttPassword
-//        )
-//        mqttManager = MqttManager(connectionParams, context, this)
-//        mqttManager?.connect()
-//
-//
-//    }
-//    fun sendMessage(message: String) {
-//        mqttManager?.publish(message)
-//
-//    }
-//
-//    override fun getMqttMesage(topic: String,message: String){
-//        Log.d("MqttApi", "got MQTT interface message -> $message")
-//        mqttMessage = message
-//
-//    }
-//    fun getMqttMesage() :String{
-//        return mqttMessage
-//    }
-//    fun disconect(){
-//        mqttManager?.disconnect()
-//    }
-//}
+)
 
 interface MqttDataInterface {
 

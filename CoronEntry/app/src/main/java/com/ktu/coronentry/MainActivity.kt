@@ -24,6 +24,8 @@ import kotlinx.coroutines.launch
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttToken
 import java.util.*
+import org.json.JSONException
+import org.json.JSONObject
 
 //, MqttDataInterface
 class MainActivity : AppCompatActivity(), MqttDataInterface {
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity(), MqttDataInterface {
     var mqttManager: MqttManager? = null
     val outTopic = "/domantas.kelpsas@gmail.com/con-creds/out"
     val inTopic = "/domantas.kelpsas@gmail.com/con-creds/in"
+    val logoutTopic = "/domantas.kelpsas@gmail.com/logout"
     val mqttBroker = "mqtt.dioty.co";
     val mqttUser = "domantas.kelpsas@gmail.com";
     val mqttPassword = "8b2ae255";
@@ -71,8 +74,20 @@ class MainActivity : AppCompatActivity(), MqttDataInterface {
 
         }
 
-        val user_code = intent.getStringExtra("user_code")
+        val user = intent.getStringExtra("user")
+        val userObj = JSONObject(user)
+        val user_code = userObj.getString("user_code")
+        val placeid = userObj.getString("placeid")
+        Log.d("JsonParse", "$user_code (id)-> $placeid")
         connectCreds = "{\"user_code\": \"$user_code\","
+
+        if (placeid == null || placeid == "null") {
+            btnEpConnect.isEnabled = false
+            btnEpConnect.isClickable = false
+        } else {
+            btnEpConnect.isEnabled = true
+            btnEpConnect.isClickable = true
+        }
     }
 
 
@@ -114,9 +129,14 @@ class MainActivity : AppCompatActivity(), MqttDataInterface {
 
     fun epConnect(view: View) {
         Log.d("epConnect()", "clicked")
-//        mqttManager?.publish(outTopic, connectCreds)
-//        mqttManager?.subscribe(inTopic)
         gotoQrScanActivity()
+    }
+
+    fun logout(view: View) {
+        Log.d("logout", "clicked")
+        mqttManager?.publish(logoutTopic, "true")
+        gotoLoginActivity()
+
     }
 
     override fun getMqttMesage(topic: String, message: String) {
@@ -131,6 +151,13 @@ class MainActivity : AppCompatActivity(), MqttDataInterface {
         }
         intent.putExtra("connectCreds", connectCreds)
         startActivity(intent)
+    }
+
+    private fun gotoLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java).apply {
+        }
+        startActivity(intent)
+        finish()
     }
 
 }

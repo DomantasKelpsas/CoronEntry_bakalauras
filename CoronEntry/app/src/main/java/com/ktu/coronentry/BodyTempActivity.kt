@@ -80,7 +80,7 @@ class BodyTempActivity : AppCompatActivity(), MqttDataInterface {
 
             runOnUiThread(Runnable { // This code will always run on the UI thread, therefore is safe to modify UI elements.
                 if(topic == bodyTempTopic)
-                tv_bodytempVal.text = message
+                tv_bodytempVal.text = "$message °C"
                 tv_bodytempVal.setTextColor(
                     ContextCompat.getColor(
                         applicationContext,
