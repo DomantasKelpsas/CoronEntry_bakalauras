@@ -2,8 +2,12 @@
 
 @section('content')
 <h1 class="p-10 flex justify-center text-4xl">Monthly Statistics</h1>
-<div class="bg-gray-100 p-5 m-8">
-<canvas id="myChart" class="bg-white rounded" max-width="100%" height="50vh"></canvas>
+<div class="bg-gray-100 p-5 m-8 border-2 rounded">
+<input class="m-2 p-2 mb-4 border-2 border-black rounded" type="date">
+<input class="m-2 p-2 mb-4 border-2 border-black rounded" type="date">
+<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">Proceed</button>
+<canvas id="myChart" class="bg-white border-2 rounded" max-width="100%" height="50vh"></canvas>
+
 </div>
 <h1 class="p-10 flex justify-center text-3xl">Single User Statistics</h1>
 
@@ -14,10 +18,10 @@ onchange="singleUserStats(this.options[this.selectedIndex].value)">
             <option value="{{$user->id}}" >{{$user->name}} [{{$user->user_code}}]</option>
         @endforeach
     </select>
-    <div id="single-user-stats" class="mx-auto text-center flex justify-center p-8 m-10 bg-gray-100">
-    <table id="single-user-table" class="table ">
-        <thead class="thead-dark">
-        <tr>       
+    <div id="single-user-stats" class="w-auto m-8 p-8 bg-gray-100 border-2 rounded">
+    <table id="single-user-table" class="table w-9/12 thead-dark border-2 border-black mx-auto">
+        <thead class="thead-dark rounded-md">
+        <tr class="rounded-md">       
         <th>EntryPoint</th>
         <th>Date</th>
         </tr>
@@ -46,22 +50,15 @@ var myChart = new Chart(ctx, {
             label: 'Monthly user count',
             data: data,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(37, 58, 75, 0.5)',
+                'rgba(255, 68, 68, 0.5)'
+                
             ],
             borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+                'rgba(37, 58, 75, 1)',
+                'rgba(255, 68, 68, 1)'
             ],
-            borderWidth: 1
+            borderWidth: 2
         }]
     },
     options: {
@@ -81,8 +78,8 @@ function singleUserStats(id){
 $.ajax({
     url: '/user-select/'+id,
     success: function(data) {
-        console.log(data);
         showSingleUserStats(data);
+        var table = $('#single-user-table').DataTable();
     }
 });
 }
@@ -91,11 +88,6 @@ $.ajax({
 function showSingleUserStats(data){
     var table = document.getElementById("single-user-table-body");
     table.innerHTML = "";
-//     if (data === undefined || data.length == 0) {
-//         var tablecontainer = document.getElementById("single-user-stats");
-//         tablecontainer.innerHTML +=    `<h3>Selected user does not have any data</h3>`;
-// }
-//else
     data.forEach( element => {                 
         var row = table.insertRow(0);
         var td_ep = row.insertCell(0);
@@ -105,5 +97,6 @@ function showSingleUserStats(data){
 
     });
 }
+
 </script>
 @endsection

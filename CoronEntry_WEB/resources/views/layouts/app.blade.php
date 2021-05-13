@@ -17,16 +17,20 @@
 <nav class="p-6 bg-purple-100 flex justify-between">     
     <ul class="flex items-center">   
     @if(Route::is('login'))
-      <li><a href="/" class="p-3">Home</a></li>
+      <li><a href="/" class="p-3 font-semibold">CoronEntry</a></li>
       <li><a href="{{route('login')}}" class="p-3">Login</a></li>
     @else
-    <li><a href="/" class="p-3">Home</a></li>
+    <li><a href="/" class="p-3 font-semibold">CoronEntry</a></li>
       <li><a href="{{route('stats')}}" class="p-3">Statistics</a></li>
       <li><a href="{{route('usermng')}}" class="p-3">User Management</a></li>
       <li><a href="{{route('epmng')}}" class="p-3">EP Management</a></li>
-      <li><a href="{{route('logout')}}" class="p-3 text-red-500">Logout</a></li>
+      
     @endif   
-    </ul> 
+    </ul>
+    <ul>
+    <li><a href="{{route('logout')}}" class="p-3 text-red-500 font-semibold">Logout</a></li>
+    </ul>
+    
 </nav>
 
 
