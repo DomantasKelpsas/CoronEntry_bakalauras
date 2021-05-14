@@ -9,6 +9,8 @@
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
+const String EP_code = ep03;
+
 const int ledGreen = 22;
 const int ledRed = 23;
 const int tempPin = 35;

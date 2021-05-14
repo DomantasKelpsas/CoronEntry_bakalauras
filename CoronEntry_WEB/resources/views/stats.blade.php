@@ -3,9 +3,11 @@
 @section('content')
 <h1 class="p-10 flex justify-center text-4xl">Monthly Statistics</h1>
 <div class="bg-gray-100 p-5 m-8 border-2 rounded">
+
 <input class="m-2 p-2 mb-4 border-2 border-black rounded" type="date">
 <input class="m-2 p-2 mb-4 border-2 border-black rounded" type="date">
-<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">Proceed</button>
+<button class="secondary-color text-white font-bold py-2 px-4 border border-blue-700 rounded">Proceed</button>
+
 <canvas id="myChart" class="bg-white border-2 rounded" max-width="100%" height="50vh"></canvas>
 
 </div>
@@ -66,20 +68,20 @@ var myChart = new Chart(ctx, {
             y: {              
                 beginAtZero: true,
                 ticks:{
-                    stepSize: 2
+                    stepSize: 4
                 }
             }
         }
     }
 });
 
-
 function singleUserStats(id){
 $.ajax({
     url: '/user-select/'+id,
     success: function(data) {
-        showSingleUserStats(data);
-        var table = $('#single-user-table').DataTable();
+    $('#single-user-table').DataTable().clear().destroy();      
+    showSingleUserStats(data);
+    $('#single-user-table').DataTable();                               
     }
 });
 }

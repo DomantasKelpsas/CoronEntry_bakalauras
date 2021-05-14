@@ -8,22 +8,24 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{asset('css/app.css')}}">  
+    <link rel="stylesheet" href="{{asset('css/misc.css')}}">  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 </head>
 <body>
-@if(!session()->has('session_id') && !Route::is('login'))
+@if(!session()->has('session_id') && !(Route::is('login') || Route::is('register') || Route::is('home')))
 <script type="text/javascript">window.location.href = "{{url('/login')}}"</script>
 @endif
-<nav class="p-6 bg-purple-100 flex justify-between">     
+<nav class="p-6 flex justify-between primary-color sticky top-0 z-5">     
     <ul class="flex items-center">   
-    @if(Route::is('login'))
-      <li><a href="/" class="p-3 font-semibold">CoronEntry</a></li>
-      <li><a href="{{route('login')}}" class="p-3">Login</a></li>
+    @if(!session()->has('session_id'))
+      <li><a href="/" class="p-3 font-semibold text-white">CoronEntry</a></li>
+      <li><a href="{{route('login')}}" class="p-3 text-white">Login</a></li>
+      <li><a href="{{route('register')}}" class="p-3 text-white">Register</a></li>
     @else
-    <li><a href="/" class="p-3 font-semibold">CoronEntry</a></li>
-      <li><a href="{{route('stats')}}" class="p-3">Statistics</a></li>
-      <li><a href="{{route('usermng')}}" class="p-3">User Management</a></li>
-      <li><a href="{{route('epmng')}}" class="p-3">EP Management</a></li>
+    <li><a href="/" class="p-3 font-semibold text-white">CoronEntry</a></li>
+      <li><a href="{{route('stats')}}" class="p-3 text-white">Statistics</a></li>
+      <li><a href="{{route('usermng')}}" class="p-3 text-white">User Management</a></li>
+      <li><a href="{{route('epmng')}}" class="p-3 text-white">EP Management</a></li>
       
     @endif   
     </ul>

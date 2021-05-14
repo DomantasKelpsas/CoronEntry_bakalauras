@@ -8,7 +8,7 @@
 
 <div class="p-10">
 <h1 class="p-10 flex justify-center text-4xl">User Management</h1>
-<button class="add bg-blue-500 text-white absolute bottom-10 right-10 rounded-full h-20 w-20" data-toggle="modal" data-target="#addModal">
+<button class="add primary-color text-white absolute bottom-10 right-10 rounded-full h-20 w-20" data-toggle="modal" data-target="#addModal">
 <i class="fas fa-plus fa-3x"></i></button>
 <table class="table w-full thead-light" id="user-table">
         <thead class="thead-light">

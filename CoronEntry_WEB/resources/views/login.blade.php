@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex justify-center">
+<div class="my-20 flex justify-center">
     <div class="w-4/12 bg-gray-50 p-6 rounded-lg">
     @if (session('status'))
         {{session('status')}}  
 
     @endif
-    <h1 class="p-4 flex justify-center text-4xl">Login</h1>
+    <h1 class="pb-4 flex justify-center text-4xl">Login</h1>
     <form  action="{{ route('login')}}" method="post">
     @csrf
     <div class="mb-4">
@@ -25,7 +25,8 @@
         @enderror
     </div>
     <div>
-    <button type="submit" class="bg-blue-500 text-white px-4 py-3 rounded font-medium w-full">Login</button>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-3 rounded font-medium w-full mb-5">Login</button>
+    <a href="{{route('register')}}" class=""><h2>Don't Have Admin account? Register your place!</h2></a>
     </div>
     </form>
     </div>

@@ -12,7 +12,6 @@ class EpManagementController extends Controller
     {
 
         $sid = request()->session()->get('session_id');
-        //dd( $sid);
         $eps = Entrypoint::select('*')->where('fk_placeid','=', $sid)->get();
         return view('ep-management')->with('eps',$eps);
     }
