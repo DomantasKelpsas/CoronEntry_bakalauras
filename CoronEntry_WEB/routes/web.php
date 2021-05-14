@@ -36,3 +36,5 @@ Route::get('/epmng', [EpManagementController::class, 'index'] )->name('epmng');
 Route::post('/epmng/add', [EpManagementController::class, 'add'] )->name('epmng-add');
 Route::put('/epmng/{id}/edit', [EpManagementController::class, 'edit'] )->name('epmng-edit');
 Route::delete('/epmng/{id}/delete', [EpManagementController::class, 'delete'] )->name('epmng-delete');
+
+Route::post('/epmng/placetemp', [EpManagementController::class, 'setPlaceTemp'] )->name('placetemp-set');

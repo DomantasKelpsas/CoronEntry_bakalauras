@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Entrypoint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 
 class EpManagementController extends Controller
 {
@@ -62,5 +64,10 @@ class EpManagementController extends Controller
         return redirect('/epmng')->with('success','Delete');
         //dd($request->input('entry-class'));
         //return view('user-management')->with('users',$users);
+    }
+
+    public function setPlaceTemp(Request $request){
+        $response = Http::post('localhost:1880/test',['temp'=>$request->temp]);
+        return redirect('/epmng');       
     }
 }
