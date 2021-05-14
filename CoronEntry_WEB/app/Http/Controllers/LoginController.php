@@ -32,14 +32,15 @@ class LoginController extends Controller
         //     return redirect()->route('home');       
         // } 
         // else return back()->with('status', 'Invalid login details');
-        if (DB::table('users')->where('email', '=', $request->email)->where('password', '=', $request->password)->where('user_type', 'Admin')->exists()) {
+        //dd(DB::table('users')->where('email', '=', $request->email)->where('password', '=', hash('sha256',$request->password))->where('user_type', 'Admin'));
+        if (DB::table('users')->where('email', '=', $request->email)->where('password', '=', hash('sha256',$request->password))->where('user_type', 'Admin')->exists()) {
             $user_id = DB::table('users')->where('email', '=', $request->email)->pluck('fk_placeid');
             //dd($user_id[0]);
             //session(['session_id' => $user_id[0]]);
             $request = request();
             $request->session()->put('session_id', $user_id[0]);
             $request->session()->save();
-            return redirect()->route('stats');       
+            return redirect()->route('home');       
         } 
         else return back()->with('status', 'Invalid login details');
         

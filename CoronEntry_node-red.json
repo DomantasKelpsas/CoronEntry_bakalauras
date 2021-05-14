@@ -1,1 +1,861 @@
-[{"id":"d5e72754.71c4e8","type":"tab","label":"CoronEntry","disabled":false,"info":""},{"id":"abf0867c.917808","type":"mysql","z":"d5e72754.71c4e8","mydb":"39b6001a.3b8cb","name":"","x":770,"y":740,"wires":[["cda0aa39.5c7b18","9a448c46.c2381"]]},{"id":"5241d618.084508","type":"function","z":"d5e72754.71c4e8","name":"getUserQuery","func":"var iData = \"SELECT * FROM users WHERE user_code = '\";\niData = iData + msg.payload.user_code + \"';\";\nmsg.topic = iData;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":540,"y":740,"wires":[["abf0867c.917808","6f3b1280.45a56c"]]},{"id":"cda0aa39.5c7b18","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":990,"y":720,"wires":[]},{"id":"9a448c46.c2381","type":"function","z":"d5e72754.71c4e8","name":"getUserEntryClass","func":"var msgo;\nflow.set(\"user-entry-class\",msg.payload[0].entry_class);\nflow.set(\"userid\",msg.payload[0].id);\nreturn msgo = {topic: \"user-entry-class\",payload: msg.payload[0].entry_class}","outputs":1,"noerr":0,"initialize":"","finalize":"","x":1030,"y":760,"wires":[[]]},{"id":"be5590f7.692b9","type":"mqtt in","z":"d5e72754.71c4e8","name":"connectCreds","topic":"/domantas.kelpsas@gmail.com/con-creds/out","qos":"0","datatype":"auto","broker":"2ffd758a.913b1a","x":110,"y":820,"wires":[["97d3a0ff.3aa26","9ee0faf3.5a9fc8"]]},{"id":"2fdbe655.960aea","type":"function","z":"d5e72754.71c4e8","name":"getEPQuery","func":"var iData = \"SELECT * FROM entrypoints WHERE entry_code = '\";\niData = iData + msg.payload.ep_code + \"';\";\nmsg.topic = iData;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":550,"y":840,"wires":[["e143d602.16b5d8"]]},{"id":"e143d602.16b5d8","type":"mysql","z":"d5e72754.71c4e8","mydb":"39b6001a.3b8cb","name":"","x":770,"y":840,"wires":[["48b0e907.863648"]]},{"id":"48b0e907.863648","type":"function","z":"d5e72754.71c4e8","name":"getEpEntryClass","func":"var db_data = msg.payload\nif(!(db_data === undefined || db_data.length == 0))\n{\n    flow.set(\"ep-entry-class\",msg.payload[0].entry_class);\n    flow.set(\"epid\",msg.payload[0].id);\n    return msg = {topic: \"ep_placeid\",payload: msg.payload[0].fk_placeid}\n}\nelse{\n    msg.payload = false;\n    return msg;\n}","outputs":1,"noerr":0,"initialize":"","finalize":"","x":1130,"y":840,"wires":[["72303b68.c23304"]]},{"id":"72303b68.c23304","type":"function","z":"d5e72754.71c4e8","name":"checkEntryValid","func":"var user_entry_class = flow.get(\"user-entry-class\");\nvar ep_entry_class = flow.get(\"ep-entry-class\");\nvar placeid = flow.get(\"placeid\");\nif(msg.payload == false){\n    msg.payload = false;\n    return msg;\n}\nvar ep_placeid = msg.payload;\nif(ep_placeid == placeid){\n    if(user_entry_class <= ep_entry_class){\n        msg.payload = true;\n        }\n    else msg.payload = false;\n    }\nelse msg.payload = false;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":880,"y":940,"wires":[["8ee33b71.0bac58","a0e14dee.78c79"]]},{"id":"88814693.1995c8","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":1570,"y":300,"wires":[]},{"id":"6a880e54.32afa","type":"mqtt out","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/servo","qos":"","retain":"","broker":"2ffd758a.913b1a","x":1170,"y":1200,"wires":[]},{"id":"d5d68aa.ac8c978","type":"trigger","z":"d5e72754.71c4e8","name":"","op1":"","op2":"false","op1type":"pay","op2type":"bool","duration":"10","extend":false,"overrideDelay":false,"units":"s","reset":"","bytopic":"all","topic":"topic","outputs":1,"x":830,"y":1200,"wires":[["6a880e54.32afa"]]},{"id":"8ee33b71.0bac58","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":1150,"y":940,"wires":[]},{"id":"8e6e9da6.13947","type":"mqtt out","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/con-creds/in","qos":"","retain":"","broker":"2ffd758a.913b1a","x":1210,"y":1040,"wires":[]},{"id":"97d3a0ff.3aa26","type":"json","z":"d5e72754.71c4e8","name":"","property":"payload","action":"","pretty":false,"x":270,"y":820,"wires":[["5241d618.084508","2fdbe655.960aea","ec944bc6.c72788"]]},{"id":"6f3b1280.45a56c","type":"debug","z":"d5e72754.71c4e8","name":"","active":false,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":640,"y":1000,"wires":[]},{"id":"ec944bc6.c72788","type":"debug","z":"d5e72754.71c4e8","name":"","active":false,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":420,"y":1000,"wires":[]},{"id":"56ee2282.00a88c","type":"mqtt in","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/mask/out","qos":"2","datatype":"auto","broker":"2ffd758a.913b1a","x":220,"y":1140,"wires":[["1b85d656.8de55a"]]},{"id":"1b85d656.8de55a","type":"debug","z":"d5e72754.71c4e8","name":"","active":false,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":630,"y":1140,"wires":[]},{"id":"25c593f4.c7b4bc","type":"mqtt in","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/bodytempBool/in","qos":"2","datatype":"auto","broker":"2ffd758a.913b1a","x":240,"y":1220,"wires":[["d5d68aa.ac8c978","5f5257f4.319498","8fa855a7.367a58"]]},{"id":"1c3cf363.3c5fed","type":"mqtt in","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/bodytemp/in","qos":"2","datatype":"auto","broker":"2ffd758a.913b1a","x":230,"y":1320,"wires":[["c2b7952c.03cdb8"]]},{"id":"c2b7952c.03cdb8","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":510,"y":1320,"wires":[]},{"id":"5f5257f4.319498","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":830,"y":1260,"wires":[]},{"id":"7c6383a7.969e1c","type":"mysql","z":"d5e72754.71c4e8","mydb":"39b6001a.3b8cb","name":"","x":850,"y":540,"wires":[["4d65bfe3.afc6f","d9956881.2c3978"]]},{"id":"4b11bf24.b050b","type":"mqtt in","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/login-creds/out","qos":"2","datatype":"auto","broker":"2ffd758a.913b1a","x":210,"y":540,"wires":[["a39e7f7a.9304f"]]},{"id":"a39e7f7a.9304f","type":"json","z":"d5e72754.71c4e8","name":"","property":"payload","action":"","pretty":false,"x":470,"y":540,"wires":[["1fc7415a.3fa0cf"]]},{"id":"1fc7415a.3fa0cf","type":"function","z":"d5e72754.71c4e8","name":"getUserQuery","func":"var iData = \"SELECT * FROM users WHERE email = '\";\niData = iData + msg.payload.email + \"'AND password = '\";\niData = iData + msg.payload.password + \"' ;\";\nmsg.topic = iData;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":640,"y":540,"wires":[["7c6383a7.969e1c"]]},{"id":"d9956881.2c3978","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":1190,"y":480,"wires":[]},{"id":"4d65bfe3.afc6f","type":"function","z":"d5e72754.71c4e8","name":"validateLogin","func":"var db_data = msg.payload\nif(!(db_data === undefined || db_data.length == 0))\n{\n    flow.set(\"placeid\",msg.payload[0].fk_placeid);\n    msg.payload = {\"user_code\":msg.payload[0].user_code,\"placeid\":msg.payload[0].fk_placeid};\n    \n}\nelse {\n    msg.payload = \"false\"\n    flow.set(\"placeid\",null);\n}\nreturn msg","outputs":1,"noerr":0,"initialize":"","finalize":"","x":1010,"y":540,"wires":[["a5d30717.071d68","d9956881.2c3978"]]},{"id":"a5d30717.071d68","type":"mqtt out","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/login-creds/in","qos":"","retain":"","broker":"2ffd758a.913b1a","x":1190,"y":620,"wires":[]},{"id":"36cdd94d.55bc16","type":"mqtt in","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/register-creds/out","qos":"2","datatype":"auto","broker":"2ffd758a.913b1a","x":220,"y":180,"wires":[["90f1bc81.3419b"]]},{"id":"696ca47f.00fdac","type":"mysql","z":"d5e72754.71c4e8","mydb":"39b6001a.3b8cb","name":"register","x":860,"y":180,"wires":[["68f52e1f.c018e","90fe31cb.1cc21"]]},{"id":"90f1bc81.3419b","type":"json","z":"d5e72754.71c4e8","name":"","property":"payload","action":"","pretty":false,"x":490,"y":180,"wires":[["f790261c.22f3e8"]]},{"id":"f790261c.22f3e8","type":"function","z":"d5e72754.71c4e8","name":"insertUserQuery","func":"var user_code = Math.random().toString(36).substring(7);\n\nflow.set(\"user_code\",user_code)\n\nvar iData = \"INSERT INTO users (name,email,password,user_code,entry_class,user_type) VALUES ( '\";\niData = iData + msg.payload.name + \"', '\";\niData = iData + msg.payload.email + \"', '\";\niData = iData + msg.payload.password + \"', '\";\niData = iData + user_code + \"', '\";\niData = iData + \"Low' , 'Default' )\";\nmsg.topic = iData;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":660,"y":180,"wires":[["696ca47f.00fdac"]]},{"id":"68f52e1f.c018e","type":"function","z":"d5e72754.71c4e8","name":"validateRegister","func":"if (msg.error === undefined)\n    msg.payload = flow.get(\"user_code\")\nelse if (msg.error.message.length > 0)\n    msg.payload = \"false\"\n\nreturn msg","outputs":1,"noerr":0,"initialize":"","finalize":"","x":1100,"y":180,"wires":[["471667c8.204f78","cf6be141.b08a"]]},{"id":"90fe31cb.1cc21","type":"debug","z":"d5e72754.71c4e8","name":"","active":false,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":1070,"y":100,"wires":[]},{"id":"d0ec6a2a.447718","type":"catch","z":"d5e72754.71c4e8","name":"","scope":["696ca47f.00fdac"],"uncaught":false,"x":810,"y":260,"wires":[["68f52e1f.c018e"]]},{"id":"471667c8.204f78","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":1290,"y":180,"wires":[]},{"id":"cf6be141.b08a","type":"mqtt out","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/register-creds/in","qos":"0","retain":"","broker":"2ffd758a.913b1a","x":1120,"y":340,"wires":[]},{"id":"9ee0faf3.5a9fc8","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":340,"y":680,"wires":[]},{"id":"a0e14dee.78c79","type":"delay","z":"d5e72754.71c4e8","name":"","pauseType":"delay","timeout":"1","timeoutUnits":"seconds","rate":"1","nbRateUnits":"1","rateUnits":"second","randomFirst":"1","randomLast":"5","randomUnits":"seconds","drop":false,"x":940,"y":1040,"wires":[["8e6e9da6.13947"]]},{"id":"8fa855a7.367a58","type":"function","z":"d5e72754.71c4e8","name":"insertStatsQuery","func":"var userid = flow.get(\"userid\");\nvar epid = flow.get(\"epid\");\nvar placeid = flow.get(\"placeid\");\nif(msg.payload == true || \"true\")\n{\n    var iData = \"INSERT INTO statistics (user_id,ep_id,date,fk_placeid) VALUES ( '\";\n    iData = iData + userid + \"', '\";\n    iData = iData + epid + \"', \";\n    iData = iData + \"NOW()\" + \", '\";\n    iData = iData + placeid+\"' )\";\n    msg.topic = iData; \n}\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":850,"y":1320,"wires":[["33f8c0e1.5f3e9","8921aa26.975018"]]},{"id":"8921aa26.975018","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":1170,"y":1440,"wires":[]},{"id":"33f8c0e1.5f3e9","type":"mysql","z":"d5e72754.71c4e8","mydb":"39b6001a.3b8cb","name":"","x":1090,"y":1320,"wires":[["8921aa26.975018"]]},{"id":"ef769f3e.b9364","type":"inject","z":"d5e72754.71c4e8","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"true","payloadType":"bool","x":670,"y":1420,"wires":[["8fa855a7.367a58"]]},{"id":"db56c60.bc08138","type":"mqtt in","z":"d5e72754.71c4e8","name":"","topic":"/domantas.kelpsas@gmail.com/logout","qos":"2","datatype":"auto","broker":"2ffd758a.913b1a","x":190,"y":1460,"wires":[["c56688b8.77f4d8","87c29611.cbcec8"]]},{"id":"c56688b8.77f4d8","type":"function","z":"d5e72754.71c4e8","name":"unsetGlobals","func":"if(msg.payload == true || msg.payload == \"true\")\nflow.set(\"user-entry-class\",undefined);\nflow.set(\"ep-entry-class\",undefined);\nflow.set(\"userid\",undefined);\nflow.set(\"user_code\",undefined);\nflow.set(\"epid\",undefined);\nflow.set(\"placeid\",undefined);\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":500,"y":1480,"wires":[[]]},{"id":"87c29611.cbcec8","type":"debug","z":"d5e72754.71c4e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":520,"y":1560,"wires":[]},{"id":"39b6001a.3b8cb","type":"MySQLdatabase","name":"","host":"localhost","port":"3306","db":"coronentry","tz":"","charset":"UTF8"},{"id":"2ffd758a.913b1a","type":"mqtt-broker","name":"","broker":"mqtt.dioty.co","port":"1883","clientid":"","usetls":false,"compatmode":false,"keepalive":"60","cleansession":true,"birthTopic":"","birthQos":"0","birthPayload":"","closeTopic":"","closeQos":"0","closePayload":"","willTopic":"","willQos":"0","willPayload":""}]
+[
+    {
+        "id": "d5e72754.71c4e8",
+        "type": "tab",
+        "label": "CoronEntry",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "abf0867c.917808",
+        "type": "mysql",
+        "z": "d5e72754.71c4e8",
+        "mydb": "39b6001a.3b8cb",
+        "name": "",
+        "x": 770,
+        "y": 740,
+        "wires": [
+            [
+                "cda0aa39.5c7b18",
+                "9a448c46.c2381"
+            ]
+        ]
+    },
+    {
+        "id": "5241d618.084508",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "getUserQuery",
+        "func": "var iData = \"SELECT * FROM users WHERE user_code = '\";\niData = iData + msg.payload.user_code + \"';\";\nmsg.topic = iData;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 540,
+        "y": 740,
+        "wires": [
+            [
+                "abf0867c.917808",
+                "6f3b1280.45a56c"
+            ]
+        ]
+    },
+    {
+        "id": "cda0aa39.5c7b18",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "9a448c46.c2381",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "getUserEntryClass",
+        "func": "var msgo;\nflow.set(\"user-entry-class\",msg.payload[0].entry_class);\nflow.set(\"userid\",msg.payload[0].id);\nreturn msgo = {topic: \"user-entry-class\",payload: msg.payload[0].entry_class}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1030,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "be5590f7.692b9",
+        "type": "mqtt in",
+        "z": "d5e72754.71c4e8",
+        "name": "connectCreds",
+        "topic": "/domantas.kelpsas@gmail.com/con-creds/out",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "2ffd758a.913b1a",
+        "x": 110,
+        "y": 820,
+        "wires": [
+            [
+                "97d3a0ff.3aa26",
+                "9ee0faf3.5a9fc8"
+            ]
+        ]
+    },
+    {
+        "id": "2fdbe655.960aea",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "getEPQuery",
+        "func": "var iData = \"SELECT * FROM entrypoints WHERE entry_code = '\";\niData = iData + msg.payload.ep_code + \"';\";\nmsg.topic = iData;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 550,
+        "y": 840,
+        "wires": [
+            [
+                "e143d602.16b5d8"
+            ]
+        ]
+    },
+    {
+        "id": "e143d602.16b5d8",
+        "type": "mysql",
+        "z": "d5e72754.71c4e8",
+        "mydb": "39b6001a.3b8cb",
+        "name": "",
+        "x": 770,
+        "y": 840,
+        "wires": [
+            [
+                "48b0e907.863648"
+            ]
+        ]
+    },
+    {
+        "id": "48b0e907.863648",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "getEpEntryClass",
+        "func": "var db_data = msg.payload\nif(!(db_data === undefined || db_data.length == 0))\n{\n    flow.set(\"ep-entry-class\",msg.payload[0].entry_class);\n    flow.set(\"epid\",msg.payload[0].id);\n    return msg = {topic: \"ep_placeid\",payload: msg.payload[0].fk_placeid}\n}\nelse{\n    msg.payload = false;\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1130,
+        "y": 840,
+        "wires": [
+            [
+                "72303b68.c23304"
+            ]
+        ]
+    },
+    {
+        "id": "72303b68.c23304",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "checkEntryValid",
+        "func": "var user_entry_class = flow.get(\"user-entry-class\");\nvar ep_entry_class = flow.get(\"ep-entry-class\");\nvar placeid = flow.get(\"placeid\");\nif(msg.payload == false){\n    msg.payload = false;\n    return msg;\n}\nvar ep_placeid = msg.payload;\nif(ep_placeid == placeid){\n    if(user_entry_class <= ep_entry_class){\n        msg.payload = true;\n        }\n    else msg.payload = false;\n    }\nelse msg.payload = false;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 880,
+        "y": 940,
+        "wires": [
+            [
+                "8ee33b71.0bac58",
+                "a0e14dee.78c79"
+            ]
+        ]
+    },
+    {
+        "id": "88814693.1995c8",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1570,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "6a880e54.32afa",
+        "type": "mqtt out",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/servo",
+        "qos": "",
+        "retain": "",
+        "broker": "2ffd758a.913b1a",
+        "x": 1170,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "d5d68aa.ac8c978",
+        "type": "trigger",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "op1": "",
+        "op2": "false",
+        "op1type": "pay",
+        "op2type": "bool",
+        "duration": "10",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 830,
+        "y": 1200,
+        "wires": [
+            [
+                "6a880e54.32afa"
+            ]
+        ]
+    },
+    {
+        "id": "8ee33b71.0bac58",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "8e6e9da6.13947",
+        "type": "mqtt out",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/con-creds/in",
+        "qos": "",
+        "retain": "",
+        "broker": "2ffd758a.913b1a",
+        "x": 1210,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "97d3a0ff.3aa26",
+        "type": "json",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 270,
+        "y": 820,
+        "wires": [
+            [
+                "5241d618.084508",
+                "2fdbe655.960aea",
+                "ec944bc6.c72788"
+            ]
+        ]
+    },
+    {
+        "id": "6f3b1280.45a56c",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "ec944bc6.c72788",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "56ee2282.00a88c",
+        "type": "mqtt in",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/mask/out",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "2ffd758a.913b1a",
+        "x": 220,
+        "y": 1140,
+        "wires": [
+            [
+                "1b85d656.8de55a"
+            ]
+        ]
+    },
+    {
+        "id": "1b85d656.8de55a",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "25c593f4.c7b4bc",
+        "type": "mqtt in",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/bodytempBool/in",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "2ffd758a.913b1a",
+        "x": 240,
+        "y": 1220,
+        "wires": [
+            [
+                "d5d68aa.ac8c978",
+                "5f5257f4.319498",
+                "8fa855a7.367a58"
+            ]
+        ]
+    },
+    {
+        "id": "1c3cf363.3c5fed",
+        "type": "mqtt in",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/bodytemp/in",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "2ffd758a.913b1a",
+        "x": 230,
+        "y": 1320,
+        "wires": [
+            [
+                "c2b7952c.03cdb8"
+            ]
+        ]
+    },
+    {
+        "id": "c2b7952c.03cdb8",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "5f5257f4.319498",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "7c6383a7.969e1c",
+        "type": "mysql",
+        "z": "d5e72754.71c4e8",
+        "mydb": "39b6001a.3b8cb",
+        "name": "",
+        "x": 850,
+        "y": 540,
+        "wires": [
+            [
+                "4d65bfe3.afc6f",
+                "d9956881.2c3978"
+            ]
+        ]
+    },
+    {
+        "id": "4b11bf24.b050b",
+        "type": "mqtt in",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/login-creds/out",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "2ffd758a.913b1a",
+        "x": 210,
+        "y": 540,
+        "wires": [
+            [
+                "a39e7f7a.9304f"
+            ]
+        ]
+    },
+    {
+        "id": "a39e7f7a.9304f",
+        "type": "json",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 470,
+        "y": 540,
+        "wires": [
+            [
+                "1fc7415a.3fa0cf"
+            ]
+        ]
+    },
+    {
+        "id": "1fc7415a.3fa0cf",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "getUserQuery",
+        "func": "var iData = \"SELECT * FROM users WHERE email = '\";\niData = iData + msg.payload.email + \"'AND password = '\";\niData = iData + msg.payload.password + \"' ;\";\nvar iData = `SELECT * FROM users WHERE email = '${msg.payload.email}' AND password = SHA2('${msg.payload.password}',256)`\nmsg.topic = iData;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 640,
+        "y": 540,
+        "wires": [
+            [
+                "7c6383a7.969e1c"
+            ]
+        ]
+    },
+    {
+        "id": "d9956881.2c3978",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "4d65bfe3.afc6f",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "validateLogin",
+        "func": "var db_data = msg.payload\nif(!(db_data === undefined || db_data.length == 0))\n{\n    flow.set(\"placeid\",msg.payload[0].fk_placeid);\n    msg.payload = {\"user_code\":msg.payload[0].user_code,\"placeid\":msg.payload[0].fk_placeid};\n    \n}\nelse {\n    msg.payload = \"false\"\n    flow.set(\"placeid\",null);\n}\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1010,
+        "y": 540,
+        "wires": [
+            [
+                "a5d30717.071d68",
+                "d9956881.2c3978"
+            ]
+        ]
+    },
+    {
+        "id": "a5d30717.071d68",
+        "type": "mqtt out",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/login-creds/in",
+        "qos": "",
+        "retain": "",
+        "broker": "2ffd758a.913b1a",
+        "x": 1190,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "36cdd94d.55bc16",
+        "type": "mqtt in",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/register-creds/out",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "2ffd758a.913b1a",
+        "x": 220,
+        "y": 180,
+        "wires": [
+            [
+                "90f1bc81.3419b"
+            ]
+        ]
+    },
+    {
+        "id": "696ca47f.00fdac",
+        "type": "mysql",
+        "z": "d5e72754.71c4e8",
+        "mydb": "39b6001a.3b8cb",
+        "name": "register",
+        "x": 860,
+        "y": 180,
+        "wires": [
+            [
+                "68f52e1f.c018e",
+                "90fe31cb.1cc21"
+            ]
+        ]
+    },
+    {
+        "id": "90f1bc81.3419b",
+        "type": "json",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 490,
+        "y": 180,
+        "wires": [
+            [
+                "f790261c.22f3e8"
+            ]
+        ]
+    },
+    {
+        "id": "f790261c.22f3e8",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "insertUserQuery",
+        "func": "var user_code = Math.random().toString(36).substring(7);\n\nflow.set(\"user_code\",user_code)\n\nvar iData = `INSERT INTO users (name,email,password,user_code,entry_class,user_type) \nVALUES ('${msg.payload.name}', '${msg.payload.email}', SHA2('${msg.payload.password}',256),'${user_code}','Low','Default')`\nmsg.topic = iData;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 660,
+        "y": 180,
+        "wires": [
+            [
+                "696ca47f.00fdac",
+                "90fe31cb.1cc21"
+            ]
+        ]
+    },
+    {
+        "id": "68f52e1f.c018e",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "validateRegister",
+        "func": "if (msg.error === undefined){\n    var usercode = flow.get(\"user_code\")\n    msg.payload = {\"user_code\":usercode,\"placeid\":null}\n}\nelse if (msg.error.message.length > 0)\n    msg.payload = \"false\"\n\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1100,
+        "y": 180,
+        "wires": [
+            [
+                "471667c8.204f78",
+                "cf6be141.b08a"
+            ]
+        ]
+    },
+    {
+        "id": "90fe31cb.1cc21",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1070,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "d0ec6a2a.447718",
+        "type": "catch",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "scope": [
+            "696ca47f.00fdac"
+        ],
+        "uncaught": false,
+        "x": 810,
+        "y": 260,
+        "wires": [
+            [
+                "68f52e1f.c018e"
+            ]
+        ]
+    },
+    {
+        "id": "471667c8.204f78",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1290,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "cf6be141.b08a",
+        "type": "mqtt out",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/register-creds/in",
+        "qos": "0",
+        "retain": "",
+        "broker": "2ffd758a.913b1a",
+        "x": 1120,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "9ee0faf3.5a9fc8",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "a0e14dee.78c79",
+        "type": "delay",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 940,
+        "y": 1040,
+        "wires": [
+            [
+                "8e6e9da6.13947"
+            ]
+        ]
+    },
+    {
+        "id": "8fa855a7.367a58",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "insertStatsQuery",
+        "func": "var userid = flow.get(\"userid\");\nvar epid = flow.get(\"epid\");\nvar placeid = flow.get(\"placeid\");\nif(msg.payload == true || \"true\")\n{\n    var iData = \"INSERT INTO statistics (user_id,ep_id,date,fk_placeid) VALUES ( '\";\n    iData = iData + userid + \"', '\";\n    iData = iData + epid + \"', \";\n    iData = iData + \"NOW()\" + \", '\";\n    iData = iData + placeid+\"' )\";\n    msg.topic = iData; \n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 850,
+        "y": 1320,
+        "wires": [
+            [
+                "33f8c0e1.5f3e9",
+                "8921aa26.975018"
+            ]
+        ]
+    },
+    {
+        "id": "8921aa26.975018",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1170,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "33f8c0e1.5f3e9",
+        "type": "mysql",
+        "z": "d5e72754.71c4e8",
+        "mydb": "39b6001a.3b8cb",
+        "name": "",
+        "x": 1090,
+        "y": 1320,
+        "wires": [
+            [
+                "8921aa26.975018"
+            ]
+        ]
+    },
+    {
+        "id": "ef769f3e.b9364",
+        "type": "inject",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 670,
+        "y": 1420,
+        "wires": [
+            [
+                "8fa855a7.367a58"
+            ]
+        ]
+    },
+    {
+        "id": "db56c60.bc08138",
+        "type": "mqtt in",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/logout",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "2ffd758a.913b1a",
+        "x": 190,
+        "y": 1460,
+        "wires": [
+            [
+                "c56688b8.77f4d8",
+                "87c29611.cbcec8"
+            ]
+        ]
+    },
+    {
+        "id": "c56688b8.77f4d8",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "unsetGlobals",
+        "func": "if(msg.payload == true || msg.payload == \"true\")\nflow.set(\"user-entry-class\",undefined);\nflow.set(\"ep-entry-class\",undefined);\nflow.set(\"userid\",undefined);\nflow.set(\"user_code\",undefined);\nflow.set(\"epid\",undefined);\nflow.set(\"placeid\",undefined);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "87c29611.cbcec8",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 1560,
+        "wires": []
+    },
+    {
+        "id": "39b6001a.3b8cb",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "localhost",
+        "port": "3306",
+        "db": "coronentry",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "2ffd758a.913b1a",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt.dioty.co",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
