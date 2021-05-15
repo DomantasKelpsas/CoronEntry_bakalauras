@@ -21,11 +21,12 @@ onchange="singleUserStats(this.options[this.selectedIndex].value)">
         @endforeach
     </select>
     <div id="single-user-stats" class="w-auto m-8 p-8 bg-gray-100 border-2 rounded">
-    <table id="single-user-table" class="table w-9/12 thead-dark border-2 border-black mx-auto">
+    <table id="single-user-table" class="table w-9/12 thead-dark table-striped border-2 border-black mx-auto">
         <thead class="thead-dark rounded-md">
         <tr class="rounded-md">       
         <th>EntryPoint</th>
-        <th>Date</th>
+        <th>Date Entered</th>
+        <th>Date Exit</th>
         </tr>
         </thead>
         <tbody id="single-user-table-body">
@@ -94,8 +95,11 @@ function showSingleUserStats(data){
         var row = table.insertRow(0);
         var td_ep = row.insertCell(0);
         var td_date = row.insertCell(1);
+        var td_exit_date = row.insertCell(2);
         td_ep.innerHTML = element['name'];
         td_date.innerHTML = element['date'];
+        td_exit_date.innerHTML = element['exit_date'];
+        
 
     });
 }

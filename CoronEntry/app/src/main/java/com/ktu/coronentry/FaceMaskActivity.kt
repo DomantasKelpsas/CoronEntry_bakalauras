@@ -199,7 +199,7 @@ class FaceMaskActivity : AppCompatActivity(), MqttDataInterface {
                         //mqttApi?.sendMessage("true")
                         mqttManager?.publish(topic,"true")
                         gotoBodyTempActivity()
-
+                        finish()
                     }
 
                 }

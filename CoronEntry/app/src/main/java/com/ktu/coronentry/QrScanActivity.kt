@@ -14,10 +14,11 @@ import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_qr_scan.*
 
 
-class QrScanActivity : AppCompatActivity(),MqttDataInterface {
+class QrScanActivity : AppCompatActivity(), MqttDataInterface {
 
     val outTopic = "/domantas.kelpsas@gmail.com/con-creds/out"
     val inTopic = "/domantas.kelpsas@gmail.com/con-creds/in"
+    val exitTopic = "/domantas.kelpsas@gmail.com/con-creds/exit"
     var mqttManager: MqttManager? = null
     val mqttBroker = "mqtt.dioty.co";
     val mqttUser = "domantas.kelpsas@gmail.com";
@@ -71,17 +72,33 @@ class QrScanActivity : AppCompatActivity(),MqttDataInterface {
         Log.d("qrscan", "got MQTT interface message -> $message")
         if (message == "true" && topic == inTopic) {
             gotoFaceMaskActivity()
-        }
-        else if(message == "false" && topic == inTopic){
+            finish()
+        } else if (message == "false" && topic == inTopic) {
             layout_qr.isVisible = true
         }
     }
 
-    private fun connectCredsCheck(ep_code: String){
-        connectCreds += "\"ep_code\": \"$ep_code\"}"
-        mqttManager?.publish(outTopic, connectCreds.toString())
-        mqttManager?.subscribe(inTopic)
+    private fun connectCredsCheck(ep_code: String) {
+
+        val ep_code_parts = ep_code.split("-").toTypedArray()
+        if (ep_code_parts.size < 2) {
+            var ep_code_pure = ep_code_parts[0];
+            connectCreds += "\"ep_code\": \"$ep_code_pure\"}"
+            mqttManager?.publish(outTopic, connectCreds.toString())
+            mqttManager?.subscribe(inTopic)
+        } else if (ep_code_parts.size == 2 && ep_code_parts[1] == "exit") {
+            var ep_code_pure = ep_code_parts[0];
+            connectCreds += "\"ep_code\": \"$ep_code_pure\"}"
+            mqttManager?.publish(exitTopic, connectCreds.toString())
+            Toast.makeText(this, "Successful Exit", Toast.LENGTH_LONG).show()
+            finish()
+        } else {
+            Toast.makeText(this, "Incorrect QR Code", Toast.LENGTH_LONG).show()
+        }
+
+
     }
+
     private fun gotoFaceMaskActivity() {
         val intent = Intent(this, FaceMaskActivity::class.java).apply {
         }

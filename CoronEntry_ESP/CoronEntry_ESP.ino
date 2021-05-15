@@ -9,7 +9,7 @@
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
-const String EP_code = ep03;
+const String EP_code = "ep01";
 
 const int ledGreen = 22;
 const int ledRed = 23;
@@ -38,7 +38,7 @@ const char* maskTopic = "/domantas.kelpsas@gmail.com/mask/out";
 const char* templimitTopic = "/domantas.kelpsas@gmail.com/templimit";
 
 bool maskOn = false;
-float templimit = 25;
+float templimit = 30;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -53,6 +53,9 @@ void setup() {
   pinMode(ledGreen, OUTPUT);
   pinMode(ledRed, OUTPUT);
   pinMode(tempPin, INPUT);
+
+  digitalWrite(ledRed, HIGH);
+  digitalWrite(ledGreen, LOW);
 
   Serial.begin(115200);
   sensors.begin();
@@ -175,15 +178,14 @@ float readBodytemp() {
   return Celcius;
 }
 
-setBodyTempLimit(String templimitMsg) {
+void setBodyTempLimit(String templimitMsg) {
   templimit = templimitMsg.toFloat();
 }
 
 
 void loop() {
 
-  //readTemp();
-
+ 
   if (!client.connected()) {
     reconnect();
   }
@@ -196,7 +198,7 @@ void loop() {
   if (maskOn) {
 
     float bodytemp = readBodytemp();
-    if (bodytemp < templimit && bodytemp > 25) {
+    if (bodytemp <= templimit && bodytemp >= 25) {
       client.publish(bodytempBoolTopic, "true");
       tone(buzzer, 1000); // Send 1KHz sound signal...
       delay(1000);        // ...for 1 sec

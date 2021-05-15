@@ -1,9 +1,11 @@
 package com.ktu.coronentry
 
 import android.app.PendingIntent.getActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_body_temp.*
@@ -89,11 +91,22 @@ class BodyTempActivity : AppCompatActivity(), MqttDataInterface {
                 )
 
             })
-        //if (topic == bodyTempBoolTopic && message == "true")
+        if (topic == bodyTempBoolTopic && message == "true"){
+            Toast.makeText(this, " Access Was Succesfully Verified", Toast.LENGTH_LONG).show()
+            finish()
+        }
     }
 
     fun mqtttest(view: View) {
         MainActivity().mqttManager?.publish(bodyTempBoolTopic,"true")
+    }
+
+    private fun gotoMainActivity(user: String) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+        }
+        intent.putExtra("user", user)
+        startActivity(intent)
+        finish()
     }
 
 }
