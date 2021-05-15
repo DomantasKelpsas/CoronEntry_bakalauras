@@ -23,7 +23,13 @@
           <div class="form-group">
             <label for="name" class="col-form-label">Name:</label>
             <input type="text" class="name" name="name" id="name">
-          </div>     
+          </div>
+          <div class="form-group">
+            <label for="userlimit" class="col-form-label">Max User Count:</label>
+            <input type="number" class="userlimit" name="userlimit" id="userlimit" min="0">
+            <label for="userlimit-check" class="col-form-label">Unlimited</label>
+            <input type="checkbox" class="userlimit-check" name="userlimit-check" id="userlimit-check">
+          </div>          
           @endif
         </form>
       </div>

@@ -45,6 +45,10 @@ class EpManagementController extends Controller
         $eps = Entrypoint::find($id);
         $eps->entry_class = $request->input('entry-class');
         $eps->name = $request->input('name');
+        if($request->input('userlimit-check')){
+            $eps->max_user_count = null;
+        }
+        else $eps->max_user_count = $request->input('userlimit');
         $eps->save();
 
         return redirect('/epmng')->with('success','Updated');
@@ -67,7 +71,7 @@ class EpManagementController extends Controller
     }
 
     public function setPlaceTemp(Request $request){
-        $response = Http::post('localhost:1880/test',['temp'=>$request->temp]);
+        $response = Http::post('localhost:1880/templimit',['temp'=>$request->temp]);
         return redirect('/epmng');       
     }
 }

@@ -21,6 +21,7 @@
         <th scope="col">Name</th>        
         <th scope="col">EP Code</th>
         <th scope="col">Entry Class</th>
+        <th scope="col">User Limit</th>
         <th scope="col">Operations</th>              
         </tr>
         </thead>
@@ -31,6 +32,7 @@
         <td>{{$ep['name']}}</td>
         <td>{{$ep['entry_code']}}</td>
         <td>{{$ep['entry_class']}}</td>
+        <td>{{$ep['max_user_count'] == null ? 'unlimited' : $ep['max_user_count']}}</td>
         <td class="" >
         
         <button class="edit text-2xl text-green-500 hover:text-green-700 text-white font-bold py-3 px-3 mr-2 rounded "><i class="far fa-edit"></i></button>
@@ -77,8 +79,17 @@
             var data = table.row($tr).data();
             console.log(data);
 
-            $('#name').val(data[1]);
-            $('#entry-class').val(data[3]);         
+            $('#name').val(data[1]);           
+            $('#entry-class').val(data[3]);
+            if(data[4] !='unlimited'){
+                $('#userlimit').val(data[4]);
+                $("#userlimit-check").removeAttr('checked');
+            }
+            else{ 
+                $('#userlimit').val(null); 
+                $('#userlimit').attr("placeholder", "unlimited");
+                $("#userlimit-check").attr('checked','checked'); 
+            }                   
             $('#editForm').attr('action','/epmng/'+data[0]+'/edit');
             $('#editModal').modal('show');
 
