@@ -39,6 +39,8 @@ const char* templimitTopic = "/domantas.kelpsas@gmail.com/templimit";
 
 bool maskOn = false;
 float templimit = 30;
+long tempReadingStart = millis();
+bool bodyTempReadStarted = false;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -168,6 +170,16 @@ void servoReset()
 }
 
 float readBodytemp() {
+  long now = millis();
+  if (!bodyTempReadStarted) {
+    tempReadingStart = millis();
+    bodyTempReadStarted = true;
+  }
+  if (now - tempReadingStart > 10000) {
+    client.publish(bodytempBoolTopic, "false");
+    maskOn = false;
+    bodyTempReadStarted = false;
+  }
   sensors.requestTemperatures();
   Celcius = sensors.getTempCByIndex(0);
   Serial.print(" C  ");
@@ -185,7 +197,7 @@ void setBodyTempLimit(String templimitMsg) {
 
 void loop() {
 
- 
+
   if (!client.connected()) {
     reconnect();
   }
