@@ -36,6 +36,7 @@ const char* bodytempTopic = "/domantas.kelpsas@gmail.com/bodytemp/in";
 const char* bodytempBoolTopic = "/domantas.kelpsas@gmail.com/bodytempBool/in";
 const char* maskTopic = "/domantas.kelpsas@gmail.com/mask/out";
 const char* templimitTopic = "/domantas.kelpsas@gmail.com/templimit";
+const char* bodytempBoolVirusTopic = "/domantas.kelpsas@gmail.com/bodytempvirus";
 
 bool maskOn = false;
 float templimit = 30;
@@ -210,6 +211,13 @@ void loop() {
   if (maskOn) {
 
     float bodytemp = readBodytemp();
+
+    if (bodytemp > templimit)
+    {
+      client.publish(bodytempBoolVirusTopic, "true");
+      client.publish(bodytempBoolTopic, "false");
+      maskOn = false;
+    }
     if (bodytemp <= templimit && bodytemp >= 25) {
       client.publish(bodytempBoolTopic, "true");
       tone(buzzer, 1000); // Send 1KHz sound signal...

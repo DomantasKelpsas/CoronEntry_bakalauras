@@ -29,6 +29,7 @@ onchange="singleUserStats(this.options[this.selectedIndex].value)">
         <th>EntryPoint</th>
         <th>Date Entered</th>
         <th>Date Exit</th>
+        <th>Body Temperature</th>
         </tr>
         </thead>
         <tbody id="single-user-table-body">
@@ -54,6 +55,7 @@ onchange="singleEPStats(this.options[this.selectedIndex].value)">
         <th>User</th>
         <th>Date Entered</th>
         <th>Date Exit</th>
+        <th>Body Temperature</th>
         </tr>
         </thead>
         <tbody id="single-ep-table-body">
@@ -134,9 +136,12 @@ function showSingleUserStats(data){
         var td_ep = row.insertCell(0);
         var td_date = row.insertCell(1);
         var td_exit_date = row.insertCell(2);
+        var td_bodytemp = row.insertCell(3);
         td_ep.innerHTML = element['name'];
         td_date.innerHTML = element['date'];
         td_exit_date.innerHTML = element['exit_date'];
+        if(element['bodytemp'] == 0)
+        td_bodytemp.innerHTML = "BAD";
         
 
     });
@@ -150,9 +155,12 @@ function showSingleEPStats(data){
         var td_ep = row.insertCell(0);
         var td_date = row.insertCell(1);
         var td_exit_date = row.insertCell(2);
+        var td_bodytemp = row.insertCell(3);
         td_ep.innerHTML = element['name'];
         td_date.innerHTML = element['date'];
         td_exit_date.innerHTML = element['exit_date'];
+        if(element['bodytemp'] == 0)
+        td_bodytemp.innerHTML = "BAD";
         
 
     });
