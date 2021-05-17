@@ -27,6 +27,7 @@ Route::post('/register', [RegisterController::class, 'store']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/user-select/{id}', [StatsController::class, 'singleUserStats'])->name('user-select');
+Route::get('/ep-select/{id}', [StatsController::class, 'singleEPStats'])->name('ep-select');
 Route::get('/stats', [StatsController::class, 'makeChart'] )->name('stats');
 Route::get('/usermng', [UserManagementController::class, 'index'] )->name('usermng');
 Route::post('/usermng/add', [UserManagementController::class, 'add'] )->name('usermng-add');

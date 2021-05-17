@@ -11,6 +11,8 @@
 <canvas id="myChart" class="bg-white border-2 rounded" max-width="100%" height="50vh"></canvas>
 
 </div>
+
+<div>
 <h1 class="p-10 flex justify-center text-3xl">Single User Statistics</h1>
 
 <select id="user-select" name="user-select" class="flex justify-center px-4 py-3 rounded font-medium w-3/12 mx-auto text-center" 
@@ -33,7 +35,32 @@ onchange="singleUserStats(this.options[this.selectedIndex].value)">
         </tbody>
     </table>
     </div>
-    
+</div>
+
+<div>
+<h1 class="p-10 flex justify-center text-3xl">Single EP Statistics</h1>
+
+<select id="ep-select" name="ep-select" class="flex justify-center px-4 py-3 rounded font-medium w-3/12 mx-auto text-center" 
+onchange="singleEPStats(this.options[this.selectedIndex].value)">
+        <option  class="text-center" value="">--- Select EntryPoint ---</option>
+        @foreach($data['eps'] as $ep)
+            <option value="{{$ep->id}}" >{{$ep->name}} [{{$ep->entry_code}}]</option>
+        @endforeach
+    </select>
+    <div id="single-ep-stats" class="w-auto m-8 p-8 bg-gray-100 border-2 rounded">
+    <table id="single-ep-table" class="table w-9/12 thead-dark table-striped border-2 border-black mx-auto">
+        <thead class="thead-dark rounded-md">
+        <tr class="rounded-md">       
+        <th>User</th>
+        <th>Date Entered</th>
+        <th>Date Exit</th>
+        </tr>
+        </thead>
+        <tbody id="single-ep-table-body">
+        </tbody>
+    </table>
+    </div>
+</div> 
 
 
 
@@ -87,9 +114,36 @@ $.ajax({
 });
 }
 
+function singleEPStats(id){
+$.ajax({
+    url: '/ep-select/'+id,
+    success: function(data) {
+    $('#single-ep-table').DataTable().clear().destroy();      
+    showSingleEPStats(data);
+    $('#single-ep-table').DataTable();                               
+    }
+});
+}
+
 
 function showSingleUserStats(data){
     var table = document.getElementById("single-user-table-body");
+    table.innerHTML = "";
+    data.forEach( element => {                 
+        var row = table.insertRow(0);
+        var td_ep = row.insertCell(0);
+        var td_date = row.insertCell(1);
+        var td_exit_date = row.insertCell(2);
+        td_ep.innerHTML = element['name'];
+        td_date.innerHTML = element['date'];
+        td_exit_date.innerHTML = element['exit_date'];
+        
+
+    });
+}
+
+function showSingleEPStats(data){
+    var table = document.getElementById("single-ep-table-body");
     table.innerHTML = "";
     data.forEach( element => {                 
         var row = table.insertRow(0);
