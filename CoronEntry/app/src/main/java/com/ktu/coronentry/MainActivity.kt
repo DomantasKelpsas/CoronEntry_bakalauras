@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity(), MqttDataInterface {
         val user = intent.getStringExtra("user")
         val userObj = JSONObject(user)
         val user_code = userObj.getString("user_code")
+        tv_usercode.text = "User Code: #$user_code"
         val placeid = userObj.getString("placeid")
         Log.d("JsonParse", "$user_code (id)-> $placeid")
         connectCreds = "{\"user_code\": \"$user_code\","
