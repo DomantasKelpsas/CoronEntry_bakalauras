@@ -39,7 +39,7 @@ const char* templimitTopic = "/domantas.kelpsas@gmail.com/templimit";
 const char* bodytempBoolVirusTopic = "/domantas.kelpsas@gmail.com/bodytempvirus";
 
 bool maskOn = false;
-float templimit = 30;
+float templimit = 37;
 long tempReadingStart = millis();
 bool bodyTempReadStarted = false;
 
@@ -127,6 +127,7 @@ void reconnect() {
       client.subscribe(inTopic);
       client.subscribe(servoTopic);
       client.subscribe(maskTopic);
+       client.subscribe(templimitTopic);
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -173,10 +174,11 @@ void servoReset()
 float readBodytemp() {
   long now = millis();
   if (!bodyTempReadStarted) {
+    delay(1500);
     tempReadingStart = millis();
     bodyTempReadStarted = true;
   }
-  if (now - tempReadingStart > 10000) {
+  if (now - tempReadingStart > 30000) {
     client.publish(bodytempBoolTopic, "false");
     maskOn = false;
     bodyTempReadStarted = false;
@@ -203,6 +205,8 @@ void loop() {
     reconnect();
   }
   client.loop();
+
+  Serial.println(templimit);
 
   long now = millis();
   if (now - lastMsg > 2000) {

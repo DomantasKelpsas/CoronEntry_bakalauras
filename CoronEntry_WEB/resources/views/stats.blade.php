@@ -4,10 +4,15 @@
 <h1 class="p-10 flex justify-center text-4xl">Monthly Statistics</h1>
 <div class="bg-gray-100 p-5 m-8 border-2 rounded">
 
-<input class="m-2 p-2 mb-4 border-2 border-black rounded" type="date">
-<input class="m-2 p-2 mb-4 border-2 border-black rounded" type="date">
-<button class="secondary-color text-white font-bold py-2 px-4 border border-blue-700 rounded">Proceed</button>
-
+<form action="{{route('stats-interval')}}" method="post">
+@csrf
+<input name="datefrom" class="m-2 p-2 mb-4 border-2 border-black rounded" type="date">
+@error('datefrom')
+<div class="text-red-500 mt-2 text-sm">{{$message}}</div>
+@enderror
+<input name="dateto" class="m-2 p-2 mb-4 border-2 border-black rounded" type="date">
+<button type="submit" class="secondary-color text-white font-bold py-2 px-4 border border-blue-700 rounded">Proceed</button>
+</form>
 <canvas id="myChart" class="bg-white border-2 rounded" max-width="100%" height="50vh"></canvas>
 
 </div>

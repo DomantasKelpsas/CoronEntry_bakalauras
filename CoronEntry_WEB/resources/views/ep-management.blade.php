@@ -32,7 +32,7 @@
         <td>{{$ep['name']}}</td>
         <td>{{$ep['entry_code']}}</td>
         <td>{{$ep['entry_class']}}</td>
-        <td>{{$ep['max_user_count'] == null ? 'unlimited' : $ep['max_user_count']}}</td>
+        <td>{{$ep['max_user_count'] === null ? 'unlimited' : $ep['max_user_count']}}</td>
         <td class="" >
         
         <button class="edit text-2xl text-green-500 hover:text-green-700 text-white font-bold py-3 px-3 mr-2 rounded "><i class="far fa-edit"></i></button>
