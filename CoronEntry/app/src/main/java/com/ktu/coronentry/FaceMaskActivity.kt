@@ -85,13 +85,10 @@ class FaceMaskActivity : AppCompatActivity(), MqttDataInterface {
     }
 
 
-    //private lateinit var faceMaskDetection: FackMaskDetection
     private lateinit var faceMaskDetection: FaceMaskDetector
-
     private fun SetupML() {
         val options: Model.Options =
             Model.Options.Builder().setDevice(Model.Device.GPU).setNumThreads(5).build()
-        //faceMaskDetection = FackMaskDetection.newInstance(applicationContext, options)
         faceMaskDetection = FaceMaskDetector.newInstance(applicationContext, options)
     }
 
@@ -196,10 +193,9 @@ class FaceMaskActivity : AppCompatActivity(), MqttDataInterface {
                         message_sent = true
                         delay(1000)
                         Log.d(TAG, "Mask detected!")
-                        //mqttApi?.sendMessage("true")
                         mqttManager?.publish(topic,"true")
                         gotoBodyTempActivity()
-                        finish()
+
                     }
 
                 }
@@ -255,6 +251,7 @@ class FaceMaskActivity : AppCompatActivity(), MqttDataInterface {
     private fun gotoBodyTempActivity() {
         val intent = Intent(this, BodyTempActivity::class.java).apply {
         }
+        finish()
         startActivity(intent)
     }
     override fun getMqttMesage(topic: String, message: String) {

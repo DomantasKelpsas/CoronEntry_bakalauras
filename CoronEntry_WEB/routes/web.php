@@ -29,7 +29,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/user-select/{id}', [StatsController::class, 'singleUserStats'])->name('user-select');
 Route::get('/ep-select/{id}', [StatsController::class, 'singleEPStats'])->name('ep-select');
 Route::get('/stats', [StatsController::class, 'makeChart'] )->name('stats');
-Route::post('/stats-interval', [StatsController::class, 'makeChartByDate'] )->name('stats-interval');
+Route::get('/stats-interval', [StatsController::class, 'makeChartByDate'] )->name('stats-interval');
 Route::get('/usermng', [UserManagementController::class, 'index'] )->name('usermng');
 Route::post('/usermng/add', [UserManagementController::class, 'add'] )->name('usermng-add');
 Route::put('/usermng/{id}/edit', [UserManagementController::class, 'edit'] )->name('usermng-edit');
@@ -40,3 +40,4 @@ Route::put('/epmng/{id}/edit', [EpManagementController::class, 'edit'] )->name('
 Route::delete('/epmng/{id}/delete', [EpManagementController::class, 'delete'] )->name('epmng-delete');
 
 Route::post('/epmng/placetemp', [EpManagementController::class, 'setPlaceTemp'] )->name('placetemp-set');
+Route::get('/badtemp-notification', [StatsController::class, 'badtempNotification'] )->name('badtemp-notification');

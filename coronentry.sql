@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2021 at 01:18 AM
+-- Generation Time: May 19, 2021 at 09:04 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.14
 
@@ -32,6 +32,8 @@ CREATE TABLE `entrypoints` (
   `name` varchar(255) NOT NULL,
   `entry_class` enum('Low','Intermediate','High','') NOT NULL,
   `entry_code` varchar(255) NOT NULL,
+  `max_user_count` int(11) UNSIGNED DEFAULT NULL,
+  `current_user_count` int(11) NOT NULL,
   `fk_placeid` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -39,31 +41,31 @@ CREATE TABLE `entrypoints` (
 -- Dumping data for table `entrypoints`
 --
 
-INSERT INTO `entrypoints` (`id`, `name`, `entry_class`, `entry_code`, `fk_placeid`) VALUES
-(1, 'ESP32', 'Low', 'ep01', 2),
-(2, 'Door209', 'High', 'ep02', 2),
-(3, 'Door112', 'High', 'ep03', 1),
-(4, 'Door414', 'Low', 'ep04', 1),
-(5, 'Door123', 'High', 'ep77', 1),
-(7, 'Door420', 'High', 'ep66', 1),
-(8, 'IoT Data', 'Low', 'ep', 1);
+INSERT INTO `entrypoints` (`id`, `name`, `entry_class`, `entry_code`, `max_user_count`, `current_user_count`, `fk_placeid`) VALUES
+(1, 'ESP32', 'Low', 'ep01', 1, 0, 2),
+(2, 'Door209', 'High', 'ep02', NULL, 0, 2),
+(3, 'Door112', 'Low', 'ep03', NULL, 0, 1),
+(4, 'Door414', 'Low', 'ep04', NULL, 0, 1),
+(5, 'Door123', 'High', 'ep77', NULL, 0, 1),
+(7, 'Door420', 'Low', 'ep66', NULL, 0, 1),
+(8, 'IoT Room', 'Low', 'ep88', NULL, 0, 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `place`
+-- Table structure for table `places`
 --
 
-CREATE TABLE `place` (
+CREATE TABLE `places` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `place`
+-- Dumping data for table `places`
 --
 
-INSERT INTO `place` (`id`, `name`) VALUES
+INSERT INTO `places` (`id`, `name`) VALUES
 (1, 'Ktu'),
 (2, '11 Bendrabutis');
 
@@ -78,6 +80,8 @@ CREATE TABLE `statistics` (
   `user_id` int(11) NOT NULL,
   `ep_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
+  `exit_date` datetime DEFAULT NULL,
+  `bodytemp` tinyint(1) NOT NULL,
   `fk_placeid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -85,13 +89,17 @@ CREATE TABLE `statistics` (
 -- Dumping data for table `statistics`
 --
 
-INSERT INTO `statistics` (`id`, `user_id`, `ep_id`, `date`, `fk_placeid`) VALUES
-(1, 1, 2, '2021-04-18 20:57:00', 2),
-(2, 1, 1, '2021-05-02 18:21:13', 2),
-(7, 57, 3, '2021-05-04 14:00:51', 1),
-(8, 2, 4, '2021-03-04 14:00:51', 1),
-(10, 1, 1, '2021-05-12 02:10:56', 2),
-(12, 1, 1, '2021-05-12 02:16:30', 2);
+INSERT INTO `statistics` (`id`, `user_id`, `ep_id`, `date`, `exit_date`, `bodytemp`, `fk_placeid`) VALUES
+(55, 74, 1, '2021-05-18 14:05:41', '2021-05-18 14:06:05', 1, 2),
+(56, 74, 1, '2021-05-18 14:18:12', NULL, 0, 2),
+(57, 74, 1, '2021-05-18 14:22:15', NULL, 0, 2),
+(58, 74, 1, '2021-05-18 14:24:25', NULL, 0, 2),
+(59, 74, 1, '2021-05-18 14:26:00', '2021-05-18 14:26:27', 1, 2),
+(61, 75, 3, '2021-05-19 21:13:19', '2021-05-19 21:14:38', 1, 1),
+(62, 75, 7, '2021-05-19 21:16:50', '2021-05-19 21:17:48', 1, 1),
+(63, 75, 7, '2021-05-19 21:23:33', '2021-05-19 21:24:03', 1, 1),
+(64, 75, 4, '2021-05-19 21:29:54', NULL, 0, 1),
+(65, 76, 4, '2021-05-19 21:37:09', '2021-05-19 21:37:16', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -115,13 +123,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `user_code`, `name`, `password`, `entry_class`, `user_type`, `fk_placeid`) VALUES
-(1, 'domkel@ktu.edu', 'usr123', 'Domantas', 'password123', 'High', 'Admin', 2),
-(2, 'admin@bak.lt', 'adm123', 'admin', 'admin123', 'High', 'Admin', 1),
-(54, 'ru@yandex.ru', 'hxruvg', 'Rudolfas', 'a', 'High', 'Default', 2),
-(55, 'tst', 'hvv4yo', 'tst', 'aa', 'Low', 'Default', 1),
-(57, 'tst@gmail.com', '40uwf', 'tst', 'ss', 'Low', 'Default', 1),
-(58, 'ttsts@gmail.com', 'm8ijpu', 'tstyy', '12', 'High', 'Default', 1),
-(59, 'domkel@gmail.com', 'k9bkc', 'Domantas K', 'pass123', 'Low', 'Default', NULL);
+(1, 'domkel@ktu.edu', 'usr123', 'Domantas', '9b8769a4a742959a2d0298c36fb70623f2dfacda8436237df08d8dfd5b37374c', 'High', 'Admin', 2),
+(2, 'admin@bak.lt', 'adm123', 'admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'High', 'Admin', 1),
+(74, 'vard@gmail.com', 'b030m', 'Vardenis', '761394478fffd98ebac02ef59bb61ce7da9cfb32103f0bcc0efd6d1062803f4d', 'Intermediate', 'Default', 2),
+(75, 'jonas.j@gmail.com', 'rnlb14', 'Jonas', '179aa54c5b82ffad3cb7a72d0b3dc68f896145589d6f80b4b9a49a14f653c94b', 'Low', 'Default', 1),
+(76, 'stanislovas.steponas@gmail.com', 'raw1z4', 'Stanislovas', '3d71f0b99b86d2385672b8b3488abc234fc3bafc62b77e9dfb2b1b27480b5f39', 'High', 'Default', 1);
 
 --
 -- Indexes for dumped tables
@@ -134,9 +140,9 @@ ALTER TABLE `entrypoints`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `place`
+-- Indexes for table `places`
 --
-ALTER TABLE `place`
+ALTER TABLE `places`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -163,22 +169,22 @@ ALTER TABLE `entrypoints`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `place`
+-- AUTO_INCREMENT for table `places`
 --
-ALTER TABLE `place`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `places`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `statistics`
 --
 ALTER TABLE `statistics`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

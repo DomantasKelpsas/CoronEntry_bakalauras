@@ -86,8 +86,7 @@
         "y": 820,
         "wires": [
             [
-                "97d3a0ff.3aa26",
-                "9ee0faf3.5a9fc8"
+                "97d3a0ff.3aa26"
             ]
         ]
     },
@@ -105,7 +104,8 @@
         "y": 840,
         "wires": [
             [
-                "e143d602.16b5d8"
+                "e143d602.16b5d8",
+                "456489a.17ad578"
             ]
         ]
     },
@@ -119,7 +119,8 @@
         "y": 840,
         "wires": [
             [
-                "48b0e907.863648"
+                "48b0e907.863648",
+                "456489a.17ad578"
             ]
         ]
     },
@@ -128,7 +129,7 @@
         "type": "function",
         "z": "d5e72754.71c4e8",
         "name": "getEpEntryClass",
-        "func": "var db_data = msg.payload\nif(!(db_data === undefined || db_data.length == 0))\n{\n    flow.set(\"ep-entry-class\",msg.payload[0].entry_class);\n    flow.set(\"epid\",msg.payload[0].id);\n    return msg = {topic: \"ep_placeid\",payload: msg.payload[0].fk_placeid}\n}\nelse{\n    msg.payload = false;\n    return msg;\n}",
+        "func": "var db_data = msg.payload\nif(!(db_data === undefined || db_data.length == 0))\n{\n    var userlimit = msg.payload[0].max_user_count;   \n    var currUserCount = msg.payload[0].current_user_count; \n    var ep_code = msg.payload[0].entry_code; \n    \n    if(userlimit != null){\n        \n        if(userlimit > currUserCount){\n        flow.set(\"ep-entry-class\",msg.payload[0].entry_class);\n        flow.set(\"epid\",msg.payload[0].id);\n        \n        return msg = {topic: \"ep_placeid\",payload: msg.payload[0].fk_placeid}\n        }\n        else {\n            msg.payload = false;\n            return msg;\n        }\n    }\n    else {\n        flow.set(\"ep-entry-class\",msg.payload[0].entry_class);\n        flow.set(\"epid\",msg.payload[0].id);\n        return msg = {topic: \"ep_placeid\",payload: msg.payload[0].fk_placeid}\n    }\n    \n}\nelse{\n    msg.payload = false;\n    return msg;\n}",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -161,23 +162,6 @@
         ]
     },
     {
-        "id": "88814693.1995c8",
-        "type": "debug",
-        "z": "d5e72754.71c4e8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1570,
-        "y": 300,
-        "wires": []
-    },
-    {
         "id": "6a880e54.32afa",
         "type": "mqtt out",
         "z": "d5e72754.71c4e8",
@@ -187,7 +171,7 @@
         "retain": "",
         "broker": "2ffd758a.913b1a",
         "x": 1170,
-        "y": 1200,
+        "y": 1260,
         "wires": []
     },
     {
@@ -208,7 +192,7 @@
         "topic": "topic",
         "outputs": 1,
         "x": 830,
-        "y": 1200,
+        "y": 1260,
         "wires": [
             [
                 "6a880e54.32afa"
@@ -258,7 +242,7 @@
             [
                 "5241d618.084508",
                 "2fdbe655.960aea",
-                "ec944bc6.c72788"
+                "9ee0faf3.5a9fc8"
             ]
         ]
     },
@@ -267,31 +251,15 @@
         "type": "debug",
         "z": "d5e72754.71c4e8",
         "name": "",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 640,
-        "y": 1000,
-        "wires": []
-    },
-    {
-        "id": "ec944bc6.c72788",
-        "type": "debug",
-        "z": "d5e72754.71c4e8",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 420,
-        "y": 1000,
+        "x": 770,
+        "y": 680,
         "wires": []
     },
     {
@@ -304,11 +272,9 @@
         "datatype": "auto",
         "broker": "2ffd758a.913b1a",
         "x": 220,
-        "y": 1140,
+        "y": 1200,
         "wires": [
-            [
-                "1b85d656.8de55a"
-            ]
+            []
         ]
     },
     {
@@ -316,15 +282,15 @@
         "type": "debug",
         "z": "d5e72754.71c4e8",
         "name": "",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 630,
-        "y": 1140,
+        "x": 890,
+        "y": 1180,
         "wires": []
     },
     {
@@ -333,16 +299,17 @@
         "z": "d5e72754.71c4e8",
         "name": "",
         "topic": "/domantas.kelpsas@gmail.com/bodytempBool/in",
-        "qos": "2",
+        "qos": "0",
         "datatype": "auto",
         "broker": "2ffd758a.913b1a",
         "x": 240,
-        "y": 1220,
+        "y": 1280,
         "wires": [
             [
-                "d5d68aa.ac8c978",
                 "5f5257f4.319498",
-                "8fa855a7.367a58"
+                "8fa855a7.367a58",
+                "3bcd6fb1.cce5d",
+                "1a635285.074a5d"
             ]
         ]
     },
@@ -356,7 +323,7 @@
         "datatype": "auto",
         "broker": "2ffd758a.913b1a",
         "x": 230,
-        "y": 1320,
+        "y": 1380,
         "wires": [
             [
                 "c2b7952c.03cdb8"
@@ -375,8 +342,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 510,
-        "y": 1320,
+        "x": 150,
+        "y": 1460,
         "wires": []
     },
     {
@@ -392,7 +359,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 830,
-        "y": 1260,
+        "y": 1320,
         "wires": []
     },
     {
@@ -466,7 +433,7 @@
         "type": "debug",
         "z": "d5e72754.71c4e8",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -601,7 +568,7 @@
         "type": "debug",
         "z": "d5e72754.71c4e8",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -635,7 +602,7 @@
         "type": "debug",
         "z": "d5e72754.71c4e8",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -704,13 +671,13 @@
         "type": "function",
         "z": "d5e72754.71c4e8",
         "name": "insertStatsQuery",
-        "func": "var userid = flow.get(\"userid\");\nvar epid = flow.get(\"epid\");\nvar placeid = flow.get(\"placeid\");\nif(msg.payload == true || \"true\")\n{\n    var iData = \"INSERT INTO statistics (user_id,ep_id,date,fk_placeid) VALUES ( '\";\n    iData = iData + userid + \"', '\";\n    iData = iData + epid + \"', \";\n    iData = iData + \"NOW()\" + \", '\";\n    iData = iData + placeid+\"' )\";\n    msg.topic = iData; \n}\nreturn msg;",
+        "func": "var userid = flow.get(\"userid\");\nvar epid = flow.get(\"epid\");\nvar placeid = flow.get(\"placeid\");\nif(msg.payload == true || msg.payload == \"true\")\n{\n    var iData = `INSERT INTO statistics (user_id,ep_id,date,bodytemp,fk_placeid) \n    VALUES ('${userid}', '${epid}', NOW(),true,'${placeid}' )`;\n    msg.topic = iData; \n    return msg;\n}\n    else return null;\n\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "x": 850,
-        "y": 1320,
+        "y": 1380,
         "wires": [
             [
                 "33f8c0e1.5f3e9",
@@ -730,8 +697,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1170,
-        "y": 1440,
+        "x": 1290,
+        "y": 1320,
         "wires": []
     },
     {
@@ -741,7 +708,7 @@
         "mydb": "39b6001a.3b8cb",
         "name": "",
         "x": 1090,
-        "y": 1320,
+        "y": 1380,
         "wires": [
             [
                 "8921aa26.975018"
@@ -769,11 +736,11 @@
         "topic": "",
         "payload": "true",
         "payloadType": "bool",
-        "x": 670,
-        "y": 1420,
+        "x": 530,
+        "y": 1680,
         "wires": [
             [
-                "8fa855a7.367a58"
+                "c4b72ebc.e048e"
             ]
         ]
     },
@@ -787,7 +754,7 @@
         "datatype": "auto",
         "broker": "2ffd758a.913b1a",
         "x": 190,
-        "y": 1460,
+        "y": 2020,
         "wires": [
             [
                 "c56688b8.77f4d8",
@@ -806,7 +773,7 @@
         "initialize": "",
         "finalize": "",
         "x": 500,
-        "y": 1480,
+        "y": 2040,
         "wires": [
             []
         ]
@@ -824,8 +791,497 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 520,
-        "y": 1560,
+        "y": 2120,
         "wires": []
+    },
+    {
+        "id": "963bf4a6.7e93a8",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 2220,
+        "wires": []
+    },
+    {
+        "id": "9b419a46.42f528",
+        "type": "http in",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "url": "templimit",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 2320,
+        "wires": [
+            [
+                "d9ad1e29.74037",
+                "859e2cb2.bf13a"
+            ]
+        ]
+    },
+    {
+        "id": "d9ad1e29.74037",
+        "type": "http response",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 330,
+        "y": 2380,
+        "wires": []
+    },
+    {
+        "id": "e927d05b.03c7d",
+        "type": "mqtt out",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/templimit",
+        "qos": "",
+        "retain": "",
+        "broker": "2ffd758a.913b1a",
+        "x": 800,
+        "y": 2320,
+        "wires": []
+    },
+    {
+        "id": "859e2cb2.bf13a",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "func": "msg.payload = msg.payload.temp\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 480,
+        "y": 2320,
+        "wires": [
+            [
+                "963bf4a6.7e93a8",
+                "e927d05b.03c7d"
+            ]
+        ]
+    },
+    {
+        "id": "632b9b9b.ff9ec4",
+        "type": "mqtt in",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/con-creds/exit",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "2ffd758a.913b1a",
+        "x": 230,
+        "y": 1780,
+        "wires": [
+            [
+                "7a0981fe.eba36",
+                "31b0998e.6a61c6",
+                "afaf4846.8a59b8"
+            ]
+        ]
+    },
+    {
+        "id": "7a0981fe.eba36",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "SetExitDate",
+        "func": "var iData = `UPDATE statistics SET exit_date = CURRENT_TIMESTAMP() WHERE statistics.id=LAST_INSERT_ID()`\nmsg.topic = iData; \n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 580,
+        "y": 1780,
+        "wires": [
+            [
+                "4c7e3a1c.efa4d4",
+                "c08664b4.598f68"
+            ]
+        ]
+    },
+    {
+        "id": "4c7e3a1c.efa4d4",
+        "type": "mysql",
+        "z": "d5e72754.71c4e8",
+        "mydb": "39b6001a.3b8cb",
+        "name": "",
+        "x": 790,
+        "y": 1780,
+        "wires": [
+            [
+                "c08664b4.598f68"
+            ]
+        ]
+    },
+    {
+        "id": "c08664b4.598f68",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1090,
+        "y": 1720,
+        "wires": []
+    },
+    {
+        "id": "c4b72ebc.e048e",
+        "type": "mqtt out",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/bodytempBool/in",
+        "qos": "0",
+        "retain": "",
+        "broker": "2ffd758a.913b1a",
+        "x": 820,
+        "y": 1680,
+        "wires": []
+    },
+    {
+        "id": "c3b6e125.bf609",
+        "type": "mqtt out",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/servo",
+        "qos": "",
+        "retain": "",
+        "broker": "2ffd758a.913b1a",
+        "x": 810,
+        "y": 1900,
+        "wires": []
+    },
+    {
+        "id": "31b0998e.6a61c6",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "openDoorsForExit",
+        "func": "msg.payload = \"true\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 410,
+        "y": 1560,
+        "wires": [
+            [
+                "d5d68aa.ac8c978"
+            ]
+        ]
+    },
+    {
+        "id": "456489a.17ad578",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "3bcd6fb1.cce5d",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "incrementUserCount",
+        "func": "if(msg.payload == true || msg.payload ==\"true\")\n{\n    var epid = flow.get(\"epid\");\n    var iData = `UPDATE entrypoints SET current_user_count = current_user_count + 1 WHERE entrypoints.id=${epid}`;\n    msg.topic = iData;\n}\nelse msg = null;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 860,
+        "y": 1460,
+        "wires": [
+            [
+                "43cd1153.9ba28"
+            ]
+        ]
+    },
+    {
+        "id": "43cd1153.9ba28",
+        "type": "mysql",
+        "z": "d5e72754.71c4e8",
+        "mydb": "39b6001a.3b8cb",
+        "name": "",
+        "x": 1090,
+        "y": 1460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "afaf4846.8a59b8",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "func": "var epid = flow.get(\"epid\");\nvar iData = `UPDATE entrypoints SET current_user_count = current_user_count - 1 WHERE entrypoints.id=${epid}`;\nmsg.topic = iData;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 570,
+        "y": 1840,
+        "wires": [
+            [
+                "fa538601.b10238"
+            ]
+        ]
+    },
+    {
+        "id": "fa538601.b10238",
+        "type": "mysql",
+        "z": "d5e72754.71c4e8",
+        "mydb": "39b6001a.3b8cb",
+        "name": "",
+        "x": 790,
+        "y": 1840,
+        "wires": [
+            [
+                "c08664b4.598f68"
+            ]
+        ]
+    },
+    {
+        "id": "50ff8e49.da25a",
+        "type": "mqtt in",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/bodytempvirus",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "2ffd758a.913b1a",
+        "x": 190,
+        "y": 2580,
+        "wires": [
+            [
+                "163c0979.224a97"
+            ]
+        ]
+    },
+    {
+        "id": "3ed418c7.96bb48",
+        "type": "mysql",
+        "z": "d5e72754.71c4e8",
+        "mydb": "39b6001a.3b8cb",
+        "name": "",
+        "x": 730,
+        "y": 2580,
+        "wires": [
+            [
+                "6f125136.8974b"
+            ]
+        ]
+    },
+    {
+        "id": "163c0979.224a97",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "insertStatsQuery",
+        "func": "var userid = flow.get(\"userid\");\nvar epid = flow.get(\"epid\");\nvar placeid = flow.get(\"placeid\");\nif(msg.payload == true || \"true\")\n{\n    var iData = `INSERT INTO statistics (user_id,ep_id,date,bodytemp,fk_placeid) VALUES ('${userid}', '${epid}', NOW(),false,'${placeid}' )`;\n    msg.topic = iData;   \n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 510,
+        "y": 2580,
+        "wires": [
+            [
+                "6f125136.8974b",
+                "3ed418c7.96bb48"
+            ]
+        ]
+    },
+    {
+        "id": "6f125136.8974b",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 2480,
+        "wires": []
+    },
+    {
+        "id": "1a635285.074a5d",
+        "type": "function",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "func": "if(msg.payload == true || msg.payload == \"true\"){\n    return msg;\n}\nelse {\n    msg = null;\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 620,
+        "y": 1260,
+        "wires": [
+            [
+                "d5d68aa.ac8c978",
+                "1b85d656.8de55a"
+            ]
+        ]
+    },
+    {
+        "id": "78e1a144.06379",
+        "type": "http request",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "localhost:8000/api/badtemp",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 370,
+        "y": 2460,
+        "wires": [
+            [
+                "dae89162.fefb7"
+            ]
+        ]
+    },
+    {
+        "id": "4bc5b868.1c3c18",
+        "type": "inject",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 190,
+        "y": 2460,
+        "wires": [
+            [
+                "78e1a144.06379"
+            ]
+        ]
+    },
+    {
+        "id": "dae89162.fefb7",
+        "type": "debug",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 2460,
+        "wires": []
+    },
+    {
+        "id": "70501cb8.bb8f84",
+        "type": "inject",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "x": 530,
+        "y": 1720,
+        "wires": [
+            [
+                "c4b72ebc.e048e"
+            ]
+        ]
+    },
+    {
+        "id": "c114639a.ea425",
+        "type": "mqtt out",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "topic": "/domantas.kelpsas@gmail.com/bodytempvirus",
+        "qos": "0",
+        "retain": "",
+        "broker": "2ffd758a.913b1a",
+        "x": 820,
+        "y": 1640,
+        "wires": []
+    },
+    {
+        "id": "89904581.e66e48",
+        "type": "inject",
+        "z": "d5e72754.71c4e8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 530,
+        "y": 1640,
+        "wires": [
+            [
+                "c114639a.ea425"
+            ]
+        ]
     },
     {
         "id": "39b6001a.3b8cb",

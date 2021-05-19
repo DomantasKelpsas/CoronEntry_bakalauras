@@ -92,13 +92,13 @@ class BodyTempActivity : AppCompatActivity(), MqttDataInterface {
 
             })
         if (topic == bodyTempBoolTopic && message == "true"){
-            Toast.makeText(this, " Access Was Succesfully Verified", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Access Was Succesfully Verified", Toast.LENGTH_LONG).show()
             finish()
         }
-    }
-
-    fun mqtttest(view: View) {
-        MainActivity().mqttManager?.publish(bodyTempBoolTopic,"true")
+        else if (topic == bodyTempBoolTopic && message == "false"){
+            Toast.makeText(this, "Access Denied!", Toast.LENGTH_LONG).show()
+            finish()
+        }
     }
 
     private fun gotoMainActivity(user: String) {

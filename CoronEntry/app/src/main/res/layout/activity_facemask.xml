@@ -22,10 +22,24 @@
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/ic_baseline_camera_rear_24"/>
 
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="Scan Your Face"
+        android:textColor="@color/dark_blue"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="90dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,17 +49,17 @@
         <TextView
             android:id="@+id/tv_output"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <ProgressBar
             android:id="@+id/pb_output"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:indeterminate="false"
             android:max="100"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:progress="0"/>
+            android:progress="0" />
 
 
     </LinearLayout>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\Statistic;
 use App\Models\User;
 use App\Models\Entrypoint;
@@ -62,5 +63,14 @@ class StatsController extends Controller
         
         $epstat = Statistic::select('*')->join('users','statistics.user_id','=','users.id')->where('statistics.ep_id','=', $id)->get();     
         return response()->json($epstat);
+    }
+
+    // public function badtempNotification(Request $request){
+    //     //$response = Http::post('localhost:8000/badtemp-notification',['temp'=>$request]);
+    //     dd($request);
+    //     return redirect('/epmng');       
+    // }
+    public function badtemp(Request $request){
+       return Statistic::all();
     }
 }
