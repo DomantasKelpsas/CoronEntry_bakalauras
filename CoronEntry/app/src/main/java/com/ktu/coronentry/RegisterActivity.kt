@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -30,6 +31,7 @@ class RegisterActivity : AppCompatActivity(), MqttDataInterface {
     var email: String = ""
     var password: String = ""
     var password_repeat: String = ""
+    var placename: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +40,19 @@ class RegisterActivity : AppCompatActivity(), MqttDataInterface {
         mqttManager = MqttManager(connectionParams, applicationContext, this)
         mqttManager?.connect()
 
+        val placeNames = arrayOf("KTU","11 Bendrabutis")
+        val arrayAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,placeNames)
+        //autoCompleteTextView.setAdapter(arrayAdapter)
+        sp_placelist.adapter = arrayAdapter
+
         btn_register.setOnClickListener {
             name = et_name.text.trim().toString()
             email = et_email.text.trim().toString()
             password = et_password.text.trim().toString()
             password_repeat = et_password_repeat.text.trim().toString()
+            placename = sp_placelist.selectedItem.toString()
 
-            initRegister(name, email, password, password_repeat)
+            initRegister(name, email, password, password_repeat,placename)
         }
     }
 
@@ -74,13 +82,14 @@ class RegisterActivity : AppCompatActivity(), MqttDataInterface {
         name: String,
         email: String,
         password: String,
-        password_repeat: String
+        password_repeat: String,
+    placename: String
     ) {
 
-        if (!(name.isEmpty() || email.isEmpty() || password.isEmpty() || password_repeat.isEmpty())) {
+        if (!(name.isEmpty() || email.isEmpty() || password.isEmpty() || password_repeat.isEmpty() || placename.isEmpty())) {
             if (email.isEmailValid()) {
                 if (checkPasswordCorrect(password, password_repeat))
-                    sendRegisterCreds(name, email, password)
+                    sendRegisterCreds(name, email, password, placename)
                 else Toast.makeText(this, "Password doesn't match", Toast.LENGTH_LONG).show()
             }
             else Toast.makeText(this, "Email is invalid", Toast.LENGTH_LONG).show()
@@ -91,9 +100,9 @@ class RegisterActivity : AppCompatActivity(), MqttDataInterface {
         return password == password_repeat
     }
 
-    private fun sendRegisterCreds(name: String, email: String, password: String) {
+    private fun sendRegisterCreds(name: String, email: String, password: String,placename: String) {
         var registerCreds =
-            "{\"name\": \"$name\",\"email\": \"$email\", \"password\": \"$password\"}"
+            "{\"name\": \"$name\",\"email\": \"$email\", \"password\": \"$password\", \"placename\": \"$placename\"}"
         mqttManager?.publish(outTopic, registerCreds)
         mqttManager?.subscribe(inTopic)
     }

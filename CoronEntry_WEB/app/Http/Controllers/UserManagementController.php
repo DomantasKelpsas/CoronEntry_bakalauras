@@ -12,20 +12,26 @@ class UserManagementController extends Controller
     {
         $sid = request()->session()->get('session_id');
         $users = User::select('*')->where('fk_placeid','=', $sid)->where('user_type','=', 'Default')->get();
-        return view('user-management')->with('users',$users);
+        $unassigned_users = DB::table('unassigned_users')->join('users','users.user_code','=','unassigned_users.user_code')->where('unassigned_users.fk_placeid','=', $sid)->get();
+        //dd($unassigned_users);
+        //$unassigned_users = User::select('*')->where('user_code','=', $unassigned_user_code)->where('user_type','=', 'Default')->get();
+        return view('user-management')->with('data',['users' => $users, 'unassigned_users' => $unassigned_users]);
     }
 
     public function add(Request $request)
     {
         $sid = request()->session()->get('session_id');
-        if (DB::table('users')->where('email', '=', $request->email)->where('user_code', '=', $request->code)->exists()) {
-            $user = User::where('email', $request->email)->first();
+        //where('email', '=', $request->email)->
+        if (DB::table('users')->where('user_code', '=', $request->code)->exists()) {
+            $user = User::where('user_code', $request->code)->first();
             //dd($user);
             if($request->input('entry-class') != null){
                 $user->entry_class = $request->input('entry-class');
             }
             $user->fk_placeid = $sid;
             $user->save();
+
+            DB::table('unassigned_users')->where('user_code', '=', $request->code)->delete();
            
         }
         
@@ -60,7 +66,7 @@ class UserManagementController extends Controller
         $user->entry_class = "";
         $user->fk_placeid = null;
         $user->save();  
-        //$users->delete();
+        
 
         return redirect('/usermng')->with('success','Delete');
         //dd($request->input('entry-class'));

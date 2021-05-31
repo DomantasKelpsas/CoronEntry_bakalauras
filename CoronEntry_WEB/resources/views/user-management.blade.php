@@ -22,7 +22,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($users as $user)
+        @foreach($data['users'] as $user)
         <tr>
         <td class="hidden">{{$user['id']}}</td>
         <td>{{$user['name']}}</td>

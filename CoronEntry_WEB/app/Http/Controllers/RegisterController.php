@@ -44,7 +44,7 @@ class RegisterController extends Controller
         $request->session()->put('session_id', $placeid[0]);
         $request->session()->save();
 
-            return redirect()->route('home');
+            return redirect()->route('home')->with('user_name',  $request->name);  ;
 
 
         // if (DB::table('users')->where('email', '=', $request->email)->where('password', '=', hash('sha256',$request->password))->where('user_type', 'Admin')->exists()) {

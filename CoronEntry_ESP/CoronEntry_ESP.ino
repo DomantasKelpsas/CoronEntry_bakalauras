@@ -222,7 +222,7 @@ void loop() {
       client.publish(bodytempBoolTopic, "false");
       maskOn = false;
     }
-    if (bodytemp <= templimit && bodytemp >= 25) {
+    if (bodytemp <= templimit && bodytemp >= templimit-2) {
       client.publish(bodytempBoolTopic, "true");
       tone(buzzer, 1000); // Send 1KHz sound signal...
       delay(1000);        // ...for 1 sec

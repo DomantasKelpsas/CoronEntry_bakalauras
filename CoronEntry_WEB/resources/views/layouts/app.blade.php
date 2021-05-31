@@ -30,6 +30,7 @@
     @endif   
     </ul>
     <ul>
+  
     <li><a href="{{route('logout')}}" class="p-3 text-red-500 font-semibold">Logout</a></li>
     </ul>
     
